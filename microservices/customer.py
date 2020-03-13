@@ -88,5 +88,17 @@ def create_customer(CustEmail):
 
     return jsonify(customer.json()), 201
 
+@app.route("/customer/<string:CustEmail>", methods=['PUT'])
+def update_customer(CustEmail):
+    customer = Customer.query.get(CustEmail)
+    CustEmail = request.json['CustEmail']
+    Password = request.json['Password']
+
+    customer.CustEmail = CustEmail
+    customer.Password = Password
+
+    db.session.commit()
+    return customer_schema.jsonify(customer)
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
