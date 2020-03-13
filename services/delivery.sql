@@ -24,12 +24,12 @@ CREATE TABLE IF NOT EXISTS Delivery (
 -- Dumping data for table `Delivery`
 --
 
-INSERT INTO Delivery (DeliveryID, PurchaseID, PurchaseTrackingID, DeliveryDate) VALUES
-("000001", "000001", "128374", "2020-01-10"),
-("000002", "000002", "128375", "2020-01-11"),
-("000003", "000003", "128376", "2020-02-12"),
-("000004", "000004", "128377", "2020-02-13"),
-("000005", "000005", "128378", "2020-01-14");
+INSERT INTO Delivery (PurchaseID, PurchaseTrackingID, DeliveryDate) VALUES
+("1", "128374", "2020-01-10"),
+("2", "128375", "2020-01-11"),
+("3", "128376", "2020-02-12"),
+("4", "128377", "2020-02-13"),
+("5", "128378", "2020-01-14");
 COMMIT;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
