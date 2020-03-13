@@ -15,6 +15,7 @@ class Customer(db.Model):
     
     CustID = db.Column(db.Integer, primary_key=True)
     CustEmail = db.Column(db.String(100), nullable=False)
+    Password = db.Column(db.String(50), nullable=False)
     FirstName = db.Column(db.String(50), nullable=False)
     LastName = db.Column(db.String(50), nullable=False)
     Birthdate = db.Column(db.DateTime, nullable=False)
@@ -24,12 +25,12 @@ class Customer(db.Model):
     UnitNum = db.Column(db.String(10), nullable=False)
     Country = db.Column(db.String(100), nullable=False)
     RegistrationDate = db.Column(db.DateTime, nullable=False)
-    Username = db.Column(db.String(50), nullable=False)
-    Password = db.Column(db.String(50), nullable=False)
+    NewsletterSubscription = db.Column(db.String(1), nullable=False)
 
-    def __init__(self, CustID, CustEmail, FirstName, LastName, Birthdate, Gender, MobileNum, Address, UnitNum, PostalCode, Country, RegistrationDate, Username, Password):
+    def __init__(self, CustID, CustEmail, Password, FirstName, LastName, Birthdate, Gender, MobileNum, Address, UnitNum, PostalCode, Country, RegistrationDate, NewsletterSubscription):
         self.CustID = CustID
         self.CustEmail = CustEmail
+        self.Password = Password
         self.FirstName = FirstName
         self.LastName = LastName
         self.Birthdate = Birthdate
@@ -39,12 +40,12 @@ class Customer(db.Model):
         self.UnitNum = UnitNum
         self.Country = Country
         self.RegistrationDate = RegistrationDate
-        self.Username = Username
-        self.Password = Password
+        self.NewsletterSubscription = NewsletterSubscription
 
     def json(self):
         return {"CustID": self.CustID, 
-                "CustEmail": self.CustEmail, 
+                "CustEmail": self.CustEmail,
+                "Password": self.Password,
                 "FirstName": self.FirstName, 
                 "LastName": self.LastName,
                 "Birthdate": self.Birthdate,
@@ -54,8 +55,7 @@ class Customer(db.Model):
                 "UnitNum": self.UnitNum,
                 "Country": self.Country,
                 "RegistrationDate": self.RegistrationDate,
-                "Username": self.Username,
-                "Password": self.Password
+                "NewsletterSubscription": self.NewsletterSubscription
                 }
 
 
@@ -64,21 +64,21 @@ def get_all():
     return jsonify({"customers": [customer.json() for customer in Customer.query.all()]})
 
 
-@app.route("/customer/<string:Username>", methods=['GET'])
-def find_by_Username(Username):
-    customer = Customer.query.filter_by(Username=Username).first()
+@app.route("/customer/<string:CustEmail>", methods=['GET'])
+def find_by_CustEmail(CustEmail):
+    customer = Customer.query.filter_by(CustEmail=CustEmail).first()
     if customer:
         return jsonify(customer.json())
-    return jsonify({"message": "Username not found."}), 404
+    return jsonify({"message": "CustEmail not found."}), 404
 
 
-@app.route("/customer/<string:Username>", methods=['POST'])
-def create_customer(Username):
-    if (Customer.query.filter_by(Username=Username).first()):
-        return jsonify({"message": "Customer'{}' already exists.".format(Username)}), 400
+@app.route("/customer/<string:CustEmail>", methods=['POST'])
+def create_customer(CustEmail):
+    if (Customer.query.filter_by(CustEmail=CustEmail).first()):
+        return jsonify({"message": "Customer'{}' already exists.".format(CustEmail)}), 400
 
     data = request.get_json()
-    customer = Customer(Username, **data)
+    customer = Customer(CustEmail, **data)
 
     try:
         db.session.add(customer)
