@@ -19,6 +19,12 @@ html , body, .regpage{
     font-family: 'Numans', sans-serif;
 } */
 
+
+.btn.btn-secondary.active.regbtn{
+    background :#9DC183!important;
+    border: none;
+}
+
 .container{
     height: 100%;
     align-content: center;
@@ -33,16 +39,18 @@ html , body, .regpage{
 }
 
 .card.reg{
-    height: 80%;
-    margin-top: auto;
-    margin-bottom: auto;
-    width: 600px;
+    height: auto;
+    margin-top: 5%;
+    margin-bottom: auto ;
+    width: 800px;
     background-color: rgba(0,0,0,0.5) !important;
 }
 /*  */
-.reg.input-group-prepend{
-    margin-right:2%;
+
+#error{
+    color: white;
 }
+
 
 .social_icon span{
     font-size: 60px;
@@ -88,6 +96,11 @@ input:focus{
     margin-left: 15px;
     margin-right: 5px;
 }
+
+.regform .input-group-prepend{
+    margin-left:2%;
+}
+
 
 .login_btn{
     color: white;
