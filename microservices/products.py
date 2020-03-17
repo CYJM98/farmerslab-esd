@@ -14,11 +14,11 @@ class Product(db.Model):
     __tablename__ = 'product'
     
     ProductID = db.Column(db.Integer, primary_key=True)
-    CustEmail = db.Column(db.String(100), nullable=False)
-    Password = db.Column(db.String(50), nullable=False)
-    FirstName = db.Column(db.String(50), nullable=False)
-    LastName = db.Column(db.String(50), nullable=False)
-    Birthdate = db.Column(db.DateTime, nullable=False)
+    ProductName = db.Column(db.String(100), nullable=False)
+    ProductType = db.Column(db.String(100), nullable=False)
+    ProductDescription = db.Column(db.String(999), nullable=False)
+    Quantity = db.Column(db.Integer nullable=False)
+    UnitPr = db.Column(db.DateTime, nullable=False)
     Gender = db.Column(db.String(1), nullable=False)
     MobileNum = db.Column(db.Integer, nullable=False)
     Address = db.Column(db.String(100), nullable=False)
