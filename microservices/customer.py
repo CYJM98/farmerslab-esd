@@ -23,6 +23,7 @@ class Customer(db.Model):
     MobileNum = db.Column(db.Integer, nullable=False)
     Address = db.Column(db.String(100), nullable=False)
     UnitNum = db.Column(db.String(10), nullable=False)
+    PostalCode = db.Column(db.String(10), nullable=False)
     Country = db.Column(db.String(100), nullable=False)
     RegistrationDate = db.Column(db.DateTime, nullable=False)
     NewsletterSubscription = db.Column(db.String(1), nullable=False)
@@ -38,6 +39,7 @@ class Customer(db.Model):
         self.MobileNum = MobileNum
         self.Address = Address
         self.UnitNum = UnitNum
+        self.PostalCode = PostalCode
         self.Country = Country
         self.RegistrationDate = RegistrationDate
         self.NewsletterSubscription = NewsletterSubscription
@@ -53,6 +55,7 @@ class Customer(db.Model):
                 "MobileNum": self.MobileNum,
                 "Address": self.Address,
                 "UnitNum": self.UnitNum,
+                "PostalCode": self.PostalCode,
                 "Country": self.Country,
                 "RegistrationDate": self.RegistrationDate,
                 "NewsletterSubscription": self.NewsletterSubscription
