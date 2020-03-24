@@ -13,12 +13,11 @@ USE `Customer`;
 
 DROP TABLE IF EXISTS Customer;
 CREATE TABLE IF NOT EXISTS Customer (
-  CustID int(6) NOT NULL AUTO_INCREMENT,
   CustEmail varchar(100) NOT NULL,
   Password varchar(50) NOT NULL,
   FirstName varchar(50) NOT NULL,
   LastName varchar(50) NOT NULL,
-  Birthdate date NOT NULL,
+  Birthdate varchar(20) NOT NULL,
   Gender char(1) NOT NULL,
   MobileNum int(10) NOT NULL,
   Address varchar(100) NOT NULL,
@@ -27,7 +26,7 @@ CREATE TABLE IF NOT EXISTS Customer (
   Country varchar(100) NOT NULL,
   RegistrationDate date NOT NULL,
   NewsletterSubscription char(1) NOT NULL,
-  PRIMARY KEY (`CustID`)
+  PRIMARY KEY (`CustEmail`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
