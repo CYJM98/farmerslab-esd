@@ -35,17 +35,17 @@
 				</div>
 			</div>
 			<div class="card-body regform">
-				<form>
+				<form id ="regForm">
 					<div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-                        <input type="text" class="form-control" placeholder="E-mail" id = "email" name ="email">
+                        <input type="email" class="form-control" placeholder="E-mail" id = "email" name ="email" required>
                         
                         <div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-key"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="Password" id="password" name="password">
+						<input type="password" class="form-control" placeholder="Password" id="password" name="password" required>
 						
                     </div>
 
@@ -53,12 +53,12 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-                        <input type="password" class="form-control" placeholder="First Name" id="fname" name ="fname">
+                        <input type="text" class="form-control" placeholder="First Name" id="fname" name ="fname" required>
 
                         <div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-user"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="Last Name" id="lname" name="lname">
+						<input type="text" class="form-control" placeholder="Last Name" id="lname" name="lname" required>
                     </div>
 
                     
@@ -66,10 +66,10 @@
                     <div class="input-group form-group" style="margin-left:2%;">
                         <div class="btn-group btn-group-toggle" data-toggle="buttons">
                             <label class="btn btn-secondary active regbtn">
-                                <input type="radio" name="m" id="m" autocomplete="off" checked > Male
+                                <input type="radio" name="gender" id="m" value ="m" autocomplete="off" checked > Male
                             </label>
                             <label class="btn btn-secondary regbtn">
-                                <input type="radio" name="f" id="f" autocomplete="off"> Female
+                                <input type="radio" name="gender" id="f" value = "f" autocomplete="off"> Female
                             </label>
                         </div>
                     </div>
@@ -81,12 +81,12 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-mobile"></i></span>
 						</div>
-                        <input type="password" class="form-control" placeholder="Mobile number" id="mobileNum" name="mobileNum">
+                        <input type="text" class="form-control" placeholder="Mobile number" id="mobileNum" name="mobileNum" required>
                         
                         <div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-calendar"></i></span>
 						</div>
-                        <input type="password" class="form-control" placeholder="Birth date" id="bdate" name="bdate">
+                        <input type="text" class="form-control" placeholder="Birth date" id="bdate" name="bdate" required>
 
                     </div>
                 
@@ -98,26 +98,26 @@
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-mail-bulk"></i></span>
 						</div>
-                        <input type="password" class="form-control" placeholder="Postal Code" id="postalcode" name="postalcode">
+                        <input type="text" class="form-control" placeholder="Postal Code" id="postalcode" name="postalcode" onblur="fillAddress()" required>
 
                         <div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-map-marker"></i></span>
 						</div>
-						<input type="password" class="form-control" placeholder="Unit Number">
+						<input type="text" class="form-control" placeholder="Unit Number" id = "unitNum" required>
                     </div>
 
                     <div class="input-group form-group">
 						<div class="input-group-prepend">
 							<span class="input-group-text"><i class="fas fa-map-marker"></i></span>
 						</div>
-                        <input type="password" class="form-control" placeholder="Address" id="address" name="address">
+                        <input type="text" class="form-control" placeholder="Address" id="address" name="address" onblur="fillPostal()" required>
                     </div>
 
                     <div class="row align-items-center remember" style="margin-left:1px;">
-						<input type="checkbox" class="form-control" id = "nletter" value="y">Subscribe to Newsletter
+						<input type="checkbox" name = "nletter" class="form-control" id = "nletter" value="y">Subscribe to Newsletter
 					</div>
 
-			
+					<div id="error"></div>
 					<div class="form-group">
 						<input type="submit" value="Sign up" class="btn float-right login_btn">
 					</div>
@@ -132,5 +132,112 @@
 		</div>
 	</div>
 </div>
+
+
+<script>
+	
+	const fillPostal = async() => {
+		address = document.getElementById("address").value;
+		var string = "https://developers.onemap.sg/commonapi/search?searchVal="+ address.replace(" ","+") +"&returnGeom=Y&getAddrDetails=Y";
+		const response = await fetch(string);
+		const json = await response.json();
+		document.getElementById("postalcode").value = json["results"][0]["POSTAL"];
+	}   
+
+	const fillAddress = async() => {
+			address = document.getElementById("postalcode").value;
+			var string = "https://developers.onemap.sg/commonapi/search?searchVal="+ address +"&returnGeom=Y&getAddrDetails=Y";
+			const response = await fetch(string);
+			const json = await response.json();
+			console.log(json);
+			document.getElementById("address").value = json["results"][0]["ADDRESS"].slice(0,-17);
+	}
+
+
+	function showError(message) {
+        $('#error').text(message);
+    }
+
+	$(document).ready(function (){  
+		$("#regForm").submit(async (event) => {
+			//Prevents screen from refreshing when submitting as we are not going to another page
+			event.preventDefault();       
+			// Change serviceURL to your own
+			var email = $("#email").val();
+			var password = $("#password").val();
+			var fname = $("#fname").val();
+			var lname = $("#lname").val();
+			var gender = $("input[name='gender']:checked").val();
+			var mobile = $("#mobileNum").val();
+			var bdate  = $("#bdate").val();
+			var postalcode = $('#postalcode').val()
+			var unitnum = $("#unitNum").val()
+			var address = $("#address").val() ;
+			var country = "singapore";
+			var newsletter = $("input[name='nletter']:checked").val();
+			if (!newsletter){
+				newsletter = "n";
+			}
+			var d = new Date();
+			var month = d.getMonth() + 1;
+			var year = d.getFullYear();
+			var regDate = year + "-" + month + "-"+d.getDate();
+			
+			console.log(regDate);
+
+			//console.log(email, fname, lname, gender, mobile, bdate, postalcode, unitnum, address, newsletter);
+
+			// if (email == "" || password == ""){
+			// 	$("div#error").html("Please fill in your email and password");
+			// }else{
+				var serviceURL = "http://127.0.0.1:5000/customer/" + email;
+				var homeURL = "";
+					
+				try {
+					const response =
+						await fetch(
+							serviceURL, 
+							{method : "POST",
+							headers: {"content-Type": "application/json"},
+							body: JSON.stringify({ CustEmail: email, Password: password, 
+													FirstName: fname, LastName: lname, Birthdate: bdate, 
+													Gender: gender, MobileNum:mobile, 
+													Address: address,  UnitNum:unitnum, PostalCode: postalcode,Country: country, 
+													RegistrationDate: regDate,NewsletterSubscription:newsletter })
+						});
+
+					const data = await response.json();
+					//console.log(data);
+						if (response.ok) {
+							console.log("hello");
+							//$("div#error").html("Login Successfull" + data.Password);
+							//sessionStorage.setItem('email', email);
+							window.location.href = "home.html";
+							
+							
+							return false;
+							
+						} else {
+							console.log(data)
+							//showError(data.message);
+							$("div#error").html("Email not found");
+							//return false;
+						}
+
+				} catch (error) {
+					// Errors when calling the service; such as network error, 
+					// service offline, etc
+					
+					$("div#error").html('There is a problem adding customer data, please try again later.<br />' + error);
+
+				}    
+			//}
+			
+		});
+	});  
+
+
+
+</script>
 </body>
 </html>
