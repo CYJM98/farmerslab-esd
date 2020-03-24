@@ -17,7 +17,7 @@ class Product(db.Model):
     ProductName = db.Column(db.String(100), nullable=False)
     ProductType = db.Column(db.String(100), nullable=False)
     ProductDescription = db.Column(db.String(999), nullable=False)
-    Quantity = db.Column(db.Integer nullable=False)
+    Quantity = db.Column(db.Integer, nullable=False)
     UnitPrice = db.Column(db.Float, nullable=False)
     UnitWeight = db.Column(db.Float, nullable=False)
     ProductImage = db.Column(db.String(50), nullable=False)
@@ -43,7 +43,6 @@ class Product(db.Model):
                 "ProductImage": self.ProductImage,
                 }
 
-
 @app.route("/product")
 def get_all():
     return jsonify({"products": [product.json() for product in Customer.query.all()]})
@@ -54,16 +53,18 @@ def find_by_ProductName(ProductName):
     product = Customer.query.filter_by(ProductName=ProductName).first()
     if product:
         return jsonify(product.json())
-    return jsonify({"message": "ProductName not found."}), 404
+    return jsonify({"message": "Product not found."}), 404
 
-
-@app.route("/product/<string:ProductName>", methods=['POST'])
-def create_customer(ProductName):
-    if (Customer.query.filter_by(ProductName=ProductName).first()):
-        return jsonify({"message": "Customer'{}' already exists.".format(ProductName)}), 400
-
+@app.route("/product", methods=['POST'])
+def create_product():
     data = request.get_json()
-    product = Customer(ProductName, **data)
+
+    ProductName = data["ProductName"]
+
+    if (Product.query.filter_by(ProductName=ProductName).first()):
+        return jsonify({"message": "Product '{}' already exists.".format(ProductName)}), 400
+
+    product = Product(**data)
 
     try:
         db.session.add(product)
@@ -74,4 +75,4 @@ def create_customer(ProductName):
     return jsonify(product.json()), 201
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5000, debug=True)
+    app.run(host='127.0.0.1', port=5001, debug=True)

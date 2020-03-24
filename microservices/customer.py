@@ -13,12 +13,11 @@ CORS(app)
 class Customer(db.Model):
     __tablename__ = 'customer'
     
-    CustID = db.Column(db.Integer, primary_key=True)
-    CustEmail = db.Column(db.String(100), nullable=False)
+    CustEmail = db.Column(db.String(100), primary_key=True)
     Password = db.Column(db.String(50), nullable=False)
     FirstName = db.Column(db.String(50), nullable=False)
     LastName = db.Column(db.String(50), nullable=False)
-    Birthdate = db.Column(db.DateTime, nullable=False)
+    Birthdate = db.Column(db.String(20), nullable=False)
     Gender = db.Column(db.String(1), nullable=False)
     MobileNum = db.Column(db.Integer, nullable=False)
     Address = db.Column(db.String(100), nullable=False)
@@ -28,8 +27,7 @@ class Customer(db.Model):
     RegistrationDate = db.Column(db.DateTime, nullable=False)
     NewsletterSubscription = db.Column(db.String(1), nullable=False)
 
-    def __init__(self, CustID, CustEmail, Password, FirstName, LastName, Birthdate, Gender, MobileNum, Address, UnitNum, PostalCode, Country, RegistrationDate, NewsletterSubscription):
-        self.CustID = CustID
+    def __init__(self, CustEmail, Password, FirstName, LastName, Birthdate, Gender, MobileNum, Address, UnitNum, PostalCode, Country, RegistrationDate, NewsletterSubscription):
         self.CustEmail = CustEmail
         self.Password = Password
         self.FirstName = FirstName
@@ -45,8 +43,7 @@ class Customer(db.Model):
         self.NewsletterSubscription = NewsletterSubscription
 
     def json(self):
-        return {"CustID": self.CustID, 
-                "CustEmail": self.CustEmail,
+        return {"CustEmail": self.CustEmail,
                 "Password": self.Password,
                 "FirstName": self.FirstName, 
                 "LastName": self.LastName,
@@ -61,6 +58,8 @@ class Customer(db.Model):
                 "NewsletterSubscription": self.NewsletterSubscription
                 }
 
+        
+
 
 @app.route("/customer")
 def get_all():
@@ -74,15 +73,17 @@ def find_by_CustEmail(CustEmail):
         return jsonify(customer.json())
     return jsonify({"message": "CustEmail not found."}), 404
 
+@app.route("/customer", methods=['POST'])
+def create_customer():
+    
+    data = request.get_json()
+    CustEmail = data["CustEmail"]
 
-@app.route("/customer/<string:CustEmail>", methods=['POST'])
-def create_customer(CustEmail):
     if (Customer.query.filter_by(CustEmail=CustEmail).first()):
         return jsonify({"message": "Customer'{}' already exists.".format(CustEmail)}), 400
-
-    data = request.get_json()
-    customer = Customer(CustEmail, **data)
-
+    
+    customer = Customer(**data)
+    
     try:
         db.session.add(customer)
         db.session.commit()
@@ -91,17 +92,17 @@ def create_customer(CustEmail):
 
     return jsonify(customer.json()), 201
 
-# @app.route("/customer/<string:CustEmail>", methods=['PUT'])
-# def update_customer(CustEmail):
-#     customer = Customer.query.get(CustEmail)
-#     CustEmail = request.json['CustEmail']
-#     Password = request.json['Password']
+@app.route("/customer/<string:CustEmail>", methods=['PUT'])
+def update_customer(CustEmail):
+    customer = Customer.query.get(CustEmail)
+    CustEmail = request.json['CustEmail']
+    Password = request.json['Password']
 
-#     customer.CustEmail = CustEmail
-#     customer.Password = Password
+    customer.CustEmail = CustEmail
+    customer.Password = Password
 
-#     db.session.commit()
-#     return customer_schema.jsonify(customer)
+    db.session.commit()
+    return customer_schema.jsonify(customer)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=5000, debug=True)
