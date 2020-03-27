@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>FarmersLab</title>
+    
+  </head>
+  <body>
+    <script>
+      window.fbAsyncInit = function() {
+        FB.init({
+          appId      : '2497611167166242',
+          cookie     : true,
+          xfbml      : true,
+          version    : 'v6.0'
+        });
+
+        FB.getLoginStatus(function(response) {
+            statusChangeCallback(response);
+        });
+      };
+
+      (function(d, s, id){
+         var js, fjs = d.getElementsByTagName(s)[0];
+         if (d.getElementById(id)) {return;}
+         js = d.createElement(s); js.id = id;
+         js.src = "https://connect.facebook.net/en_US/sdk.js";
+         fjs.parentNode.insertBefore(js, fjs);
+       }(document, 'script', 'facebook-jssdk'));
+
+       function statusChangeCallback(response){
+         if(response.status === 'connected'){
+           console.log('Logged in and authenticated');
+           testAPI();
+         } else {
+           console.log('Not authenticated');
+         }
+       }
+
+      function checkLoginState() {
+        FB.getLoginStatus(function(response) {
+          statusChangeCallback(response);
+        });
+      }
+
+      function testAPI(){
+        FB.api('/me?fields=name,address,birthday,gender,email,id,last_name,location,middle_name,first_name', function(response){
+          if(response && !response.error){
+            //console.log(response);
+            buildProfile(response);
+            }
+        })
+      }
+
+      function buildProfile(user){
+        let profile = `
+          <h3>${user.name}</h3>
+          <ul class="list-group">
+            <li class="list-group-item">User ID: ${user.id}</li>
+            <li class="list-group-item">Username: ${user.name}</li>
+            <li class="list-group-item">First Name: ${user.first_name}</li>
+            <li class="list-group-item">Middle Name: ${user.middle_name}</li>
+            <li class="list-group-item">Last Name: ${user.last_name}</li>
+            <li class="list-group-item">Gender: ${user.gender}</li>
+            <li class="list-group-item">Birthday: ${user.birthday}</li>
+            <li class="list-group-item">Email: ${user.email}</li>
+            <li class="list-group-item">Location: ${user.location.name}</li>
+          </ul>
+        `;
+
+        document.getElementById('profile').innerHTML = profile;
+      }
+
+
+      function logout(){
+        FB.logout(function(response){
+          setElements(false);
+        });
+      }
+    </script>
+   
+      <div class="fb-login-button" id="fb-btn" scope="public_profile,email,user_birthday, user_gender, user_location" onlogin="checkLoginState()"
+        data-width="" data-size="small" data-button-type="continue_with" data-layout="default" data-auto-logout-link="true" data-use-continue-as="false">
+        <fb:login-button
+
+          onlogin="checkLoginState();">
+        </fb:login-button>
+      </div>
+ 
+
+
+      <div id="profile"></div>
+  </body>
+</html>
