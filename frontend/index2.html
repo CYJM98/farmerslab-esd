@@ -1,94 +1,98 @@
 <!DOCTYPE html>
+
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>FarmersLab</title>
-    
-  </head>
-  <body>
-    <script>
-      window.fbAsyncInit = function() {
-        FB.init({
-          appId      : '2497611167166242',
-          cookie     : true,
-          xfbml      : true,
-          version    : 'v6.0'
-        });
+    <head>
+    </head>
 
-        FB.getLoginStatus(function(response) {
-            statusChangeCallback(response);
-        });
-      };
+    <body>
 
-      (function(d, s, id){
-         var js, fjs = d.getElementsByTagName(s)[0];
-         if (d.getElementById(id)) {return;}
-         js = d.createElement(s); js.id = id;
-         js.src = "https://connect.facebook.net/en_US/sdk.js";
-         fjs.parentNode.insertBefore(js, fjs);
-       }(document, 'script', 'facebook-jssdk'));
+        <script>
 
-       function statusChangeCallback(response){
-         if(response.status === 'connected'){
-           console.log('Logged in and authenticated');
-           testAPI();
-         } else {
-           console.log('Not authenticated');
-         }
-       }
+        window.fbAsyncInit = function() {
+            FB.init({
+            appId      : '2497611167166242',
+            cookie     : true,                     // Enable cookies to allow the server to access the session.
+            xfbml      : true,                     // Parse social plugins on this webpage.
+            version    : 'v6.0'           // Use this Graph API version for this call.
+            });
 
-      function checkLoginState() {
-        FB.getLoginStatus(function(response) {
-          statusChangeCallback(response);
-        });
-      }
 
-      function testAPI(){
-        FB.api('/me?fields=name,address,birthday,gender,email,id,last_name,location,middle_name,first_name', function(response){
-          if(response && !response.error){
-            //console.log(response);
-            buildProfile(response);
+            FB.getLoginStatus(function(response) {   // Called after the JS SDK has been initialized.
+                statusChangeCallback(response);        // Returns the login status.
+            });
+        };
+
+        
+        (function(d, s, id) {                      // Load the SDK asynchronously
+            var js, fjs = d.getElementsByTagName(s)[0];
+            if (d.getElementById(id)) return;
+            js = d.createElement(s); js.id = id;
+            js.src = "https://connect.facebook.net/en_US/sdk.js";
+            fjs.parentNode.insertBefore(js, fjs);
+        }(document, 'script', 'facebook-jssdk'));
+
+        function statusChangeCallback(response) {  // Called with the results from FB.getLoginStatus().
+            console.log('statusChangeCallback');
+            console.log(response);                   // The current login status of the person.
+            if (response.status === 'connected') {   // Logged into your webpage and Facebook.
+                console.log(response)
+                testAPI();
+            } else {                                 // Not logged into your webpage or we are unable to tell.
+                document.getElementById('status').innerHTML = 'Please log ' +
+                    'into this webpage.';
             }
-        })
-      }
+        }
+        
+        function testAPI() {                      // Testing Graph API after login.  See statusChangeCallback() for when this call is made.
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('me?fields=id,name,first_name,middle_name,last_name,gender,birthday,email,location,address', function(response) {
+                console.log(response);
+                console.log('Successful login for: ' + response.name);
+                document.getElementById('status').innerHTML =
+                    'Thanks for logging in, ' + response.name + '!'; 
+                    if(response && !response.error){
+                        buildProfile(response);
+                    }
+                
+                
+            });
+        }      
 
-      function buildProfile(user){
-        let profile = `
-          <h3>${user.name}</h3>
-          <ul class="list-group">
-            <li class="list-group-item">User ID: ${user.id}</li>
-            <li class="list-group-item">Username: ${user.name}</li>
-            <li class="list-group-item">First Name: ${user.first_name}</li>
-            <li class="list-group-item">Middle Name: ${user.middle_name}</li>
-            <li class="list-group-item">Last Name: ${user.last_name}</li>
-            <li class="list-group-item">Gender: ${user.gender}</li>
-            <li class="list-group-item">Birthday: ${user.birthday}</li>
-            <li class="list-group-item">Email: ${user.email}</li>
-            <li class="list-group-item">Location: ${user.location.name}</li>
-          </ul>
-        `;
+        function buildProfile(user){
+            let profile = `
+            <h3>${user.name}</h3>
+            <ul class="list-group">
+                <li class="list-group-item">User ID: ${user.id}</li>
+                <li class="list-group-item">Username: ${user.name}</li>
+                <li class="list-group-item">First Name: ${user.first_name}</li>
+                <li class="list-group-item">Middle Name: ${user.middle_name}</li>
+                <li class="list-group-item">Last Name: ${user.last_name}</li>
+                <li class="list-group-item">Gender: ${user.gender}</li>
+                <li class="list-group-item">Birthday: ${user.birthday}</li>
+                <li class="list-group-item">Email: ${user.email}</li>
+                <li class="list-group-item">Location: ${user.location}</li>
+            </ul>
+            `;
 
-        document.getElementById('profile').innerHTML = profile;
-      }
+            document.getElementById('profile').innerHTML = profile;
+        }  
 
+        function checkLoginState() {               // Called when a person is finished with the Login Button.
+            FB.getLoginStatus(function(response) {   // See the onlogin handler
+            statusChangeCallback(response);
+            });
+        }
+        
+        </script>
 
-      function logout(){
-        FB.logout(function(response){
-          setElements(false);
-        });
-      }
-    </script>
-   
-      <div class="fb-login-button" id="fb-btn" scope="public_profile,email,user_birthday, user_gender, user_location" onlogin="checkLoginState()"
-        data-width="" data-size="small" data-button-type="continue_with" data-layout="default" data-auto-logout-link="true" data-use-continue-as="false">
-        <fb:login-button
+    <fb:login-button 
+        scope="public_profile,email,user_birthday, user_gender, user_location"
+        onlogin="checkLoginState();">
+    </fb:login-button>
 
-          onlogin="checkLoginState();">
-        </fb:login-button>
-      </div>
- 
-
-
-      <div id="profile"></div>
-  </body>
+    <input type ='button' onclick="checkLoginState()" value ="Sign up with Facebook">
+    
+     <div id="status"></div>
+     <div id ='profile'></div>
+    </body>
 </html>
