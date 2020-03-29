@@ -89,6 +89,8 @@
 							if (data.Password == password){
 								//$("div#error").html("Login Successfull" + data.Password);
 								sessionStorage.setItem('email', email);
+								sessionStorage.setItem("fname", data.FirstName);
+								sessionStorage.setItem("lname", data.LastName);
 								window.location.href = "home.html";
 							}else{
 								$("div#error").html("Wrong Password");

@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>The Farmers Lab</title>
+
+
+
+  
+  <!--Fontawesome CDN-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!--  -->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script src="common.js"></script>
+
+  <!--  -->
+  <!--Custom styles-->
+  <link rel="stylesheet" type="text/css" href="main.css">
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">The Farmers Lab</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <div id="field" ></div>
+          </li>
+
+          <li class="nav-item active">
+            <a class="nav-link" href="home.html">Home
+              <span class="sr-only">(current)</span>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Orders</a>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" onclick="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  
+    <div class="container">
+        
+        <div class="row">
+            <div class="col-12 text-center" style="margin-top:36px;">
+                <small >
+                    <i><a href="home.html" style="color:#9DC183;">Browse other products here.</a> </i>
+                </small>
+            </div>
+            <br/><br/>
+            
+        </div>
+        
+        <div class="row">
+
+            <div class="col-lg-6">
+                <div id="image"></div>     
+            </div>
+
+            <!-- /.col-lg-6 -->
+
+            <div class="col-lg-6">
+                <div class="info-align">
+                    <h2 id="prodname"></h2>
+                    <p class="border-line"></p>
+                    <br/>
+                    <p id = "price" style="max-width: 80%;"></p>
+                    <p id = "info" style="max-width: 80%;"></p>
+                    <p class="border-line-full"></p>
+                    <p id = "weight"></p>
+                    <p id = "qty"></p>
+                </div>    
+                <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 10%;float: right;" data-toggle="modal" data-target="#modal">Purchase</button>      
+            </div>
+        </div>
+        <!-- End row 2 -->
+        <!-- Modal -->
+        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header " >
+                    <h5 class="modal-title" id="modal-title" style="color:#9DC183;"></h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+
+                <div class="modal-body" >    
+                    <div id="modal-img"></div>                     
+                    <div id="modal-content" style="text-align: center; margin:10%;"></div>  
+                    <p id="modal-price" style="text-align: center; "></p> 
+
+                    <p style="text-align:center;">Quantity: </p> 
+                    <input type="text" class="form-control form-control-sm" style="max-width: 20%;margin-left:40%">    
+               
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary btn-sm"  style="background-color:#9DC183; border:none; margin-right:40%;">Check out</button>
+                </div>
+            </div>
+            </div>
+        </div>
+            
+        
+
+    </div>
+    <!-- End container -->
+    
+    <!-- Footer -->
+    <footer class="py-5 bg-dark" style="margin-top:2%;">
+        <div class="container">
+        <p class="m-0 text-center text-white">Copyright &copy; The Farmers Lab 2020</p>
+    </footer>
+
+
+
+
+
+
+<script>
+    let prodName = sessionStorage.getItem('current_prod');
+
+    //if direct access without clicking view more from home.html
+    if(prodName == null){
+        window.location.href = "home.html";
+    }else{
+        
+        $(async () => {     
+          var productURL = "http://127.0.0.1:5001/product/" + prodName;
+                  
+                  // console.log("test product");
+                  try {
+                      const response =
+                          await fetch(
+                              productURL, { method: 'GET' }
+                          );
+
+                      const data = await response.json();
+
+                          if (response.ok) {
+                            
+                              var product = data;
+                              var desc =  data["ProductDescription"];
+                              var image = data["ProductImage"];
+                              var type = data["ProductType"];
+                              var qty = data["Quantity"];
+                              var price = data["UnitPrice"];
+                              var weight = data["UnitWeight"];
+                              var avail = "Out of stock";
+
+                              if(qty>0){
+                                avail = "In stock";
+                              }
+                              
+                              console.log();
+                              $("#image").append('<img class="card-img-top" src="img/'+ image+'" alt="Card image cap">');
+                              $("#prodname").append(prodName);
+                              $("#price").append('<small class="text-muted"><b>SGD '+ price+'.00</b></small>');
+                              $("#info").append('<small class="text-muted">'+desc+'</small>');
+                              $("#weight").append('<br><small class="text-muted">'+ weight+' Gram</small><small class="text-muted" style="float:right;">'+ avail +'</small>');
+                              //$("#qty").append('<br><small class="text-muted">'+ qty+' left</small>');
+
+                              $("#modal-title").append(prodName);
+                              $("#modal-img").append('<img class="card-img-top" src="img/'+ image+'" alt="Card image cap" width="300px" height="300px">')
+                              $("#modal-content").append(desc);
+                              $("#modal-price").append('<small class="text-muted"><b>SGD '+ price+'.00</b></small>');
+
+                              
+
+                        } 
+
+                  } catch (error) {
+                      // Errors when calling the service; such as network error, 
+                      // service offline, etc
+                      console.log('There is a problem retrieving product data, please try again later.<br />' + error);
+
+                  }    
+            
+        });
+    }
+</script>
+
+
+</body>
+</html>

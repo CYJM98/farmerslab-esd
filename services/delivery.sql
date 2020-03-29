@@ -14,9 +14,10 @@ USE `Delivery`;
 DROP TABLE IF EXISTS Delivery;
 CREATE TABLE IF NOT EXISTS Delivery (
   DeliveryID int(6) NOT NULL AUTO_INCREMENT,
-  PurchaseID int(6) NOT NULL,
-  PurchaseTrackingID varchar(100) NOT NULL,
+  OrderID int(6) NOT NULL,
+  OrderTrackingID varchar(100) NOT NULL,
   DeliveryDate date NOT NULL,
+  DeliveryStatus int(1) NOT NULL, 
   PRIMARY KEY (`DeliveryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
@@ -24,12 +25,12 @@ CREATE TABLE IF NOT EXISTS Delivery (
 -- Dumping data for table `Delivery`
 --
 
-INSERT INTO Delivery (PurchaseID, PurchaseTrackingID, DeliveryDate) VALUES
-("1", "128374", "2020-01-10"),
-("2", "128375", "2020-01-11"),
-("3", "128376", "2020-02-12"),
-("4", "128377", "2020-02-13"),
-("5", "128378", "2020-01-14");
+INSERT INTO Delivery (OrderID, OrderTrackingID, DeliveryDate, DeliveryStatus) VALUES
+("1", "128374", "2020-01-10", "1"),
+("2", "128375", "2020-01-11", "1"),
+("3", "128376", "2020-02-12", "1"),
+("4", "128377", "2020-02-13", "1"),
+("5", "128378", "2020-01-14", "0");
 COMMIT;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";

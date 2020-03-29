@@ -18,8 +18,8 @@ class Product(db.Model):
     ProductType = db.Column(db.String(100), nullable=False)
     ProductDescription = db.Column(db.String(999), nullable=False)
     Quantity = db.Column(db.Integer, nullable=False)
-    UnitPrice = db.Column(db.Float, nullable=False)
-    UnitWeight = db.Column(db.Float, nullable=False)
+    UnitPrice = db.Column(db.Float(precision=2), nullable=False)
+    UnitWeight = db.Column(db.Float(precision=1), nullable=False)
     ProductImage = db.Column(db.String(50), nullable=False)
 
     def __init__(self, ProductID, ProductName, ProductType, ProductDescription, Quantity, UnitPrice, UnitWeight, ProductImage):
@@ -45,12 +45,12 @@ class Product(db.Model):
 
 @app.route("/product")
 def get_all():
-    return jsonify({"products": [product.json() for product in Customer.query.all()]})
+    return jsonify({"products": [product.json() for product in Product.query.all()]})
 
 
 @app.route("/product/<string:ProductName>", methods=['GET'])
 def find_by_ProductName(ProductName):
-    product = Customer.query.filter_by(ProductName=ProductName).first()
+    product = Product.query.filter_by(ProductName=ProductName).first()
     if product:
         return jsonify(product.json())
     return jsonify({"message": "Product not found."}), 404
