@@ -14,7 +14,7 @@ USE `Payment`;
 DROP TABLE IF EXISTS Payment;
 CREATE TABLE IF NOT EXISTS Payment (
   PaymentID int(6) NOT NULL AUTO_INCREMENT,
-  PurchaseID int(6) NOT NULL,
+  OrderID int(6) NOT NULL,
   PaymentAmount float(10,2) NOT NULL,
   PaymentDateTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PaymentType varchar(50) NOT NULL,
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Payment (
 -- Dumping data for table `Payment`
 --
 
-INSERT INTO Payment (PurchaseID, PaymentAmount, PaymentDateTime, PaymentType) VALUES
+INSERT INTO Payment (OrderID, PaymentAmount, PaymentDateTime, PaymentType) VALUES
 ("1", "59.90", "2020-01-03 21:43:23:523", "Visa"),
 ("2", "22.75", "2020-01-04 21:43:23:523", "Visa"),
 ("3", "33.22", "2020-01-05 21:43:23:523", "Mastercard"),

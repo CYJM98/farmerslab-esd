@@ -18,8 +18,8 @@ class Product(db.Model):
     ProductType = db.Column(db.String(100), nullable=False)
     ProductDescription = db.Column(db.String(999), nullable=False)
     Quantity = db.Column(db.Integer, nullable=False)
-    UnitPrice = db.Column(db.Float, nullable=False)
-    UnitWeight = db.Column(db.Float, nullable=False)
+    UnitPrice = db.Column(db.Float(precision=2), nullable=False)
+    UnitWeight = db.Column(db.Float(precision=1), nullable=False)
     ProductImage = db.Column(db.String(50), nullable=False)
 
     def __init__(self, ProductID, ProductName, ProductType, ProductDescription, Quantity, UnitPrice, UnitWeight, ProductImage):
