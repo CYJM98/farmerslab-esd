@@ -36,6 +36,7 @@
             console.log(response);                   // The current login status of the person.
             if (response.status === 'connected') {   // Logged into your webpage and Facebook.
                 console.log(response)
+                console.log(response.authResponse.accessToken);
                 testAPI();
             } else {                                 // Not logged into your webpage or we are unable to tell.
                 document.getElementById('status').innerHTML = 'Please log ' +
@@ -52,15 +53,11 @@
                     'Thanks for logging in, ' + response.name + '!'; 
                     if(response && !response.error){
                         buildProfile(response);
-                    }
-                
-                
+                    }  
             });
         }      
-
         function buildProfile(user){
             let profile = `
-            <h3>${user.name}</h3>
             <ul class="list-group">
                 <li class="list-group-item">User ID: ${user.id}</li>
                 <li class="list-group-item">Username: ${user.name}</li>
@@ -83,16 +80,32 @@
             });
         }
         
+      document.getElementById('signup_button').addEventListener("click"), function() {
+        FB.login(function(response) {
+          console.log(response);
+          if (response.authResponse) {
+            console.log('Welcome!  Fetching your information.... ');
+            FB.api('me?fields=id,name,first_name,middle_name,last_name,gender,birthday,email,location,address', function(response) {
+              console.log('Good to see you, ' + response.name + '.');
+            });
+          } 
+          else {
+            console.log('User cancelled login or did not fully authorize.');
+          }
+        },{scope="public_profile,email,user_birthday, user_gender, user_location", return_scopes:true});
+      }
+
         </script>
 
     <fb:login-button 
         scope="public_profile,email,user_birthday, user_gender, user_location"
         onlogin="checkLoginState();">
     </fb:login-button>
-
-    <input type ='button' onclick="checkLoginState()" value ="Sign up with Facebook">
     
      <div id="status"></div>
+     <div>
+       <button id='signup_button' type='button'>Sign up with Facebook</button>
+     </div>
      <div id ='profile'></div>
     </body>
 </html>
