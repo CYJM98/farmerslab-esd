@@ -45,12 +45,12 @@ class Product(db.Model):
 
 @app.route("/product")
 def get_all():
-    return jsonify({"products": [product.json() for product in Customer.query.all()]})
+    return jsonify({"products": [product.json() for product in Product.query.all()]})
 
 
 @app.route("/product/<string:ProductName>", methods=['GET'])
 def find_by_ProductName(ProductName):
-    product = Customer.query.filter_by(ProductName=ProductName).first()
+    product = Product.query.filter_by(ProductName=ProductName).first()
     if product:
         return jsonify(product.json())
     return jsonify({"message": "Product not found."}), 404
