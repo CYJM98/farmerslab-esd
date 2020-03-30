@@ -6,6 +6,10 @@ body{
     
 }
 
+.navbar-nav > li > a:hover{
+    color:white!important;
+}
+
 .cardwidth{
     max-width: 272px;
     padding:9px;
@@ -86,8 +90,19 @@ p .info-align{
     margin-top: -40px;
     width: 30px;
     height: 47px;
-    border-bottom: 4px solid #9DC183;
-    
+    border-bottom: 4px solid #9DC183;    
+}
+
+.border-line2{
+    margin-top: -35px;
+    width: 30px;
+    height: 47px;
+    border-bottom: 4px solid #9DC183;    
+    float: left;
+    text-align: left;
+    display:block;
+    /* left:-180px;
+    position:relative; */
 }
 
 

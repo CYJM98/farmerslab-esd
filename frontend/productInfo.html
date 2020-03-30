@@ -43,7 +43,7 @@
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
     <div class="container">
-      <a class="navbar-brand" href="#">The Farmers Lab</a>
+      <a class="navbar-brand" href="home.html">The Farmers Lab</a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -60,6 +60,9 @@
           </li>
           <li class="nav-item">
             <a class="nav-link" href="#">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="cart.html">Cart</a>
           </li>
           
           <li class="nav-item">
@@ -86,52 +89,31 @@
         
         <div class="row">
 
-            <div class="col-lg-6">
+            <div class="col-lg-7">
                 <div id="image"></div>     
             </div>
 
-            <!-- /.col-lg-6 -->
+            <!-- /.col-lg-7 -->
 
-            <div class="col-lg-6">
+            <div class="col-lg-5">
                 <div class="info-align">
                     <h2 id="prodname"></h2>
+                    
                     <p class="border-line"></p>
                     <br/>
                     <p id = "price" style="max-width: 80%;"></p>
-                    <p id = "info" style="max-width: 80%;"></p>
-                    <p class="border-line-full"></p>
+                    <p id = "info" style="max-width: 80%;" class="text-muted"></p>
                     <p id = "weight"></p>
+                    
+                    <p class="border-line-full"></p>
+                    <p style="float:left;"> <small>Quantity: </small> </p> 
                     <p id = "qty"></p>
+                    <p id ="msg" style="float:right; padding-right:5px;"></p>
+                   
+                    
+                    <p class="border-line-full"></p>
                 </div>    
-                <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 10%;float: right;" data-toggle="modal" data-target="#modal">Purchase</button>      
-            </div>
-        </div>
-        <!-- End row 2 -->
-        <!-- Modal -->
-        <div class="modal fade" id="modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header " >
-                    <h5 class="modal-title" id="modal-title" style="color:#9DC183;"></h5>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-
-                <div class="modal-body" >    
-                    <div id="modal-img"></div>                     
-                    <div id="modal-content" style="text-align: center; margin:10%;"></div>  
-                    <p id="modal-price" style="text-align: center; "></p> 
-
-                    <p style="text-align:center;">Quantity: </p> 
-                    <input type="text" class="form-control form-control-sm" style="max-width: 20%;margin-left:40%">    
-               
-                </div>
-
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-primary btn-sm"  style="background-color:#9DC183; border:none; margin-right:40%;">Check out</button>
-                </div>
-            </div>
+                <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: right;" onclick="addcart()" >Add to cart</button>      
             </div>
         </div>
             
@@ -152,7 +134,70 @@
 
 
 <script>
+    let fname = sessionStorage.getItem('fname');
+    let lname = sessionStorage.getItem('lname');
     let prodName = sessionStorage.getItem('current_prod');
+    let cart = sessionStorage.getItem('cart_items');
+    $("div#field").html(fname + " " + lname+","); 
+    
+
+    //onclick get name, qty amount
+    //check if session exist, if exist, get the values and push a new object into array
+    //store back into session 
+    //get from session arr
+    
+    
+    function addcart(){
+      var p = $("#price").text();
+      var price = parseInt(p.slice(4,));
+     
+      //console.log(price+price);
+      
+      var name =$("#prodname").text();
+      var qty_id = document.getElementById("qty_select");
+      var qty = parseInt(qty_id.options[qty_id.selectedIndex].value);
+
+      var img = $("#img").attr('src');
+
+
+      console.log(price, name, qty);
+      var cartArr = [];
+      var cartObj = {name: name,
+                      price:price,
+                      qty:qty,
+                      image: img};
+      
+      if(cart==null){
+        cartArr.push(cartObj);
+        sessionStorage.setItem('cart_items',JSON.stringify(cartArr));  
+
+      }else{
+        //check if the same one exists, if it exists, add on to existing qty
+        
+        var check = false;
+        cartArr = JSON.parse(cart);
+        for(var i = 0; i < cartArr.length; i++){
+          if(cartArr[i].name == name){
+            cartArr[i].qty +=qty;
+            check = true;
+          }
+          
+        }
+        if(check == false){
+          cartArr.push(cartObj);
+        }
+        
+        sessionStorage.setItem('cart_items',JSON.stringify(cartArr));
+      }
+      
+      
+      console.log(cartArr);  
+      
+      alert("Successfully added "+ name+" to cart");    
+      window.location.href = "cart.html";
+    }
+    
+    console.log(cart);
 
     //if direct access without clicking view more from home.html
     if(prodName == null){
@@ -186,20 +231,43 @@
                                 avail = "In stock";
                               }
                               
-                              console.log();
-                              $("#image").append('<img class="card-img-top" src="img/'+ image+'" alt="Card image cap">');
+                             
+                              $("#image").append('<img class="card-img-top" src="img/'+ image+'" alt="Card image cap" id="img" >');
                               $("#prodname").append(prodName);
                               $("#price").append('<small class="text-muted"><b>SGD '+ price+'.00</b></small>');
+                              //$("#info").append(desc);
                               $("#info").append('<small class="text-muted">'+desc+'</small>');
                               $("#weight").append('<br><small class="text-muted">'+ weight+' Gram</small><small class="text-muted" style="float:right;">'+ avail +'</small>');
-                              //$("#qty").append('<br><small class="text-muted">'+ qty+' left</small>');
+                              
+
+                              var dropdown_selection = '<select class="form-control form-control-sm" style="max-width: 15%;float:right;" id="qty_select">';
+                              for(var s = 1; s<=qty; s++){
+                                dropdown_selection += '<option value="'+s+'" ><small>'+s+'</small></option>';
+                              }                                         
+                              dropdown_selection +='</select>';
+                              $("#qty").append(dropdown_selection);
 
                               $("#modal-title").append(prodName);
                               $("#modal-img").append('<img class="card-img-top" src="img/'+ image+'" alt="Card image cap" width="300px" height="300px">')
                               $("#modal-content").append(desc);
-                              $("#modal-price").append('<small class="text-muted"><b>SGD '+ price+'.00</b></small>');
+                              $("#modal-price").append('<small class="text-muted"><b>SGD '+ price+'.00</b></small>');  
 
-                              
+
+                              //check if current product is alrdy in the cart
+                              if (cart !== null){               
+                                var cartcheck = false;               
+                                var curr_cart = JSON.parse(cart);
+                                for(var i = 0; i <curr_cart.length; i++){
+                                  //console.log(curr_cart[i].name, prodName,"hello");
+                                  if(curr_cart[i].name == prodName){                           
+                                    cartcheck = true;
+                                  }
+                                }
+                                if(cartcheck){
+                                  $("#msg").append('<small  style="color:#9DC183;">Added in cart!<small>');
+                                }  
+                              }  
+                              //end if cart
 
                         } 
 
