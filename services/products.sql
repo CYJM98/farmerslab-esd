@@ -47,7 +47,18 @@ INSERT INTO Product (ProductName, ProductType, ProductDescription, Quantity, Uni
 ("Radish", "Vegetable", "Radishes are small red or white vegetables that are the roots of a plant. They are eaten raw in salads.", 15, 3, 4, "radish.jpg"),
 ("Yam", "Vegetable", "A yam is a root vegetable which is like a potato, and grows in tropical regions.", 15, 4, 1, "yam.jpg"),
 ("Turnip", "Vegetable", "A turnip is a round vegetable with a greenish-white skin that is the root of a crop.", 27, 5, 3, "turnip.jpg"),
-("Potato", "Vegetable", "Potatoes are quite round vegetables with brown or red skins and white insides. They grow under the ground.", 18, 4, 5, "potato.jpg");
+("Potato", "Vegetable", "Potatoes are quite round vegetables with brown or red skins and white insides. They grow under the ground.", 18, 4, 5, "potato.jpg"),
+
+("Apple", "Fruit", "An apple is a round fruit with smooth green, yellow, or red skin and firm white flesh.", 50, 4, 3, "apple.jpg"),
+("Dragonfruit", "Fruit", "Dragon fruit, is a tropical fruit known for its vibrant red skin and sweet, seed-speckled pulp.", 20, 5, 4, "dragonfruit.jpg"),
+("Grapes", "Fruit", "Grapes are small green or dark purple fruit which grow in bunches.", 40, 4, 3, "grapes.jpg"),
+("Lime", "Fruit", "A lime is a green fruit that tastes like a lemon. Limes grow on trees in tropical countries.", 10, 4, 2, "lime.jpg"),
+("Mango", "Fruit", "A mango is a large sweet yellowish fruit which grows on a tree in hot countries.", 32, 4, 3, "mango.jpg"),
+("Orange", "Fruit", "An orange is a round juicy fruit with a thick, orange coloured skin.", 50, 4, 3, "orange.jpg"),
+("Peach", "Fruit", "A peach is a soft, round, slightly furry fruit with sweet yellow flesh and pinky-orange skin.", 15, 4.5, 3, "peach.jpg"),
+("Pear", "Fruit", "A pear is a sweet, juicy fruit which is narrow near its stalk, and wider and rounded at the bottom.", 20, 3, 2, "pear.jpg"),
+("Plum", "Fruit", "A plum is a small, sweet fruit with a smooth red or yellow skin and a stone in the middle.", 10, 2, 5, "plum.jpg"),
+("Watermelon", "Fruit", "A watermelon is a large round fruit with green skin, pink flesh, and black seeds.", 12, 5, 7, "watermelon.jpg");
 COMMIT;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
