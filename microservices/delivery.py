@@ -68,9 +68,11 @@ def create_delivery():
 def update_deliverydate(DeliveryID):
     delivery = Delivery.query.get(DeliveryID)
     DeliveryID = request.json['DeliveryID']
+    OrderID = request.json['OrderID']
+    OrderTrackingID = request.json['OrderTrackingID']
     DeliveryDate = request.json['DeliveryDate']
     DeliveryStatus = request.json['DeliveryStatus']
-
+    
     delivery.DeliveryID = DeliveryID
     delivery.DeliveryDate = DeliveryDate
     delivery.DeliveryStatus = DeliveryStatus

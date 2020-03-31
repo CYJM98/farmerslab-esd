@@ -17,15 +17,15 @@ class Orders(db.Model):
     CustEmail = db.Column(db.String(100), nullable=False)
     ProductName = db.Column(db.String(100), nullable=False)
     OrderQuantity = db.Column(db.Integer, nullable=False)
-    OrderTrackingID = db.Column(db.Integer, nullable=False)
+    DeliveryID = db.Column(db.Integer, nullable=False)
     OrderDate = db.Column(db.DateTime, nullable=False)
 
-    def __init__(self, OrderID, CustEmail, ProductName, OrderQuantity, OrderTrackingID, OrderDate):
+    def __init__(self, OrderID, CustEmail, ProductName, OrderQuantity, DeliveryID, OrderDate):
         self.OrderID = OrderID
         self.CustEmail = CustEmail
         self.ProductName = ProductName
         self.OrderQuantity = OrderQuantity
-        self.OrderTrackingID = OrderTrackingID
+        self.DeliveryID = DeliveryID
         self.OrderDate = OrderDate
 
     def json(self):
@@ -33,7 +33,7 @@ class Orders(db.Model):
                 "CustEmail": self.CustEmail,
                 "ProductName": self.ProductName, 
                 "OrderQuantity":self.OrderQuantity, 
-                "OrderTrackingID": self.OrderTrackingID,
+                "DeliveryID": self.DeliveryID,
                 "OrderDate": self.OrderDate
                 }
 
@@ -73,12 +73,18 @@ def create_order():
 def update_order(OrderID):
     order = Orders.query.get(OrderID)
     OrderID = request.json['OrderID']
+    CustEmail = request.json['CustEmail']
     ProductName = request.json['ProductName']
     OrderQuantity = request.json['OrderQuantity']
+    DeliveryID = request.json['DeliveryID']
+    OrderDate = request.json['OrderDate']
 
     order.OrderID = OrderID
+    order.CustEmail = CustEmail
     order.ProductName = ProductName
     order.OrderQuantity = OrderQuantity
+    order.DeliveryID = DeliveryID
+    order.OrderDate = OrderDate
 
     db.session.commit()
     return orders_schema.jsonify(order)
