@@ -13,7 +13,7 @@ USE `Delivery`;
 
 DROP TABLE IF EXISTS Delivery;
 CREATE TABLE IF NOT EXISTS Delivery (
-  DeliveryID int(6) NOT NULL AUTO_INCREMENT,
+  DeliveryID int(6) NOT NULL,
   OrderID int(6) NOT NULL,
   OrderTrackingID varchar(100) NOT NULL,
   DeliveryDate date NOT NULL,

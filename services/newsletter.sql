@@ -13,7 +13,7 @@ USE `Newsletter`;
 
 DROP TABLE IF EXISTS Newsletter;
 CREATE TABLE IF NOT EXISTS Newsletter (
-  NewsletterID int(6) NOT NULL AUTO_INCREMENT,
+  NewsletterID int(6) NOT NULL,
   Content varchar(999) NOT NULL,
   PRIMARY KEY (`NewsletterID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

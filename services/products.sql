@@ -13,7 +13,7 @@ USE `Product`;
 
 DROP TABLE IF EXISTS Product;
 CREATE TABLE IF NOT EXISTS Product (
-  ProductID int(6) NOT NULL AUTO_INCREMENT,
+  ProductID int(6) NOT NULL,
   ProductName varchar(100) NOT NULL,
   ProductType varchar(100),
   ProductDescription varchar(999),

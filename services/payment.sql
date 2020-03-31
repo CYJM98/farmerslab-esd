@@ -13,7 +13,7 @@ USE `Payment`;
 
 DROP TABLE IF EXISTS Payment;
 CREATE TABLE IF NOT EXISTS Payment (
-  PaymentID int(6) NOT NULL AUTO_INCREMENT,
+  PaymentID int(6) NOT NULL,
   OrderID int(6) NOT NULL,
   PaymentAmount float(10,2) NOT NULL,
   PaymentDateTime datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
