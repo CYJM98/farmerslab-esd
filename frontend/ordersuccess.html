@@ -9,10 +9,6 @@
   <meta name="author" content="">
 
   <title>The Farmers Lab</title>
-
-
-
-  
   <!--Fontawesome CDN-->
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
   <!--  -->
@@ -63,7 +59,7 @@
           <li class="nav-item">
             <a class="nav-link" href="#">Orders</a>
           </li>
-          <li class="nav-item active">
+          <li class="nav-item">
             <a class="nav-link" href="cart.html">Cart</a>
             <span class="sr-only">(current)</span>
           </li>
@@ -81,12 +77,10 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-8" style="margin-top:4%;"> 
-          <h4 style="color:#9DC183;">Shopping Cart</h4>
+          <h4 style="color:#9DC183;">Your order has been confirmed!</h4>
           <p class="border-line2"></p>
           <br/>
-          <p><small class="text-muted" style="margin-left:-29px;">View what is currently in your cart. Not satisfied? </small></p>
-          <p><small  ><a href="home.html" style="color:#9DC183!important;">Browse more items here!</a></small></p>
-         
+          <p><small class="text-muted" style="margin-left:-29px;">Your order will be arriving to you soon! </small></p>
         </div>
           
 
@@ -95,7 +89,7 @@
             
         <div class="row">
             <div class="col-lg-8">
-                <div class="card " id="checkout" style="margin-top:5%;">
+                <div class="card " style="margin-top:5%;">
                     <!-- <div class="card-header text-center bg-transparent">
                       <h4 style="color:#9DC183;">Cart items</h4>
                     </div> -->
@@ -104,10 +98,9 @@
                       </div>
                     </div>  
                     <div class="card-footer bg-transparent" id="cartInfoFooter">
-                      <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: left;" onclick="clearcart()" >Clear All</button>
-                      <small style="margin-left:50%; color:#9DC183;">Total:</small>
-                      <!-- <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: right;" id="checkout_btn" ></button>      -->
-                    </div>
+                      <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: left;" onclick="clearcart()" >Track Order(s)</button>
+                      <small id="total" style="margin-left:50%; color:#9DC183;">Total:</small>
+                       </div>   
                 </div>
             </div>
             <!-- /.col-lg-8 -->
@@ -170,7 +163,7 @@ if(fname==null && lname == null){
         console.log(cartArr[0].name);
         content+='<table class="table table-hover text-center table-borderless ">'+
                   '<thead>'+
-                  '<tr ><td scope="col" >Cart Items</td><th scope="col"><small></small>'+
+                  '<tr ><td scope="col" >Order Items</td><th scope="col"><small></small>'+
                     '</td><td scope="col"><small></small></td><td scope="col"><small>Sub-total</small></td></tr></thead>'+
                     '<tbody>'
                     ;
@@ -202,7 +195,6 @@ if(fname==null && lname == null){
         //check out btn here
         if(cart != null){
           $("#cartInfoFooter").append('<button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: right;" id="checkout_btn" >S$ '+total +'</button> ');
-          $("#checkout").append('<div class="card-footer bg-transparent"><div id="paypal-button" style="padding-left: 40%;"></div></div>');
         }
 
         //$("#checkout_btn").append("S$ "+ total +'.00');   
@@ -248,53 +240,6 @@ $(async () => {
         }    
             
 });
-paypal.Button.render({
-style: {
- size: 'small',
- color: 'gold',
- shape: 'pill',
- label: 'checkout',
- tagline: 'true'
-},
-
-env: 'sandbox', // sandbox | production
-
-// PayPal Client IDs - replace with your own
-// Create a PayPal app: https://developer.paypal.com/developer/applications/create
-client: {
-    sandbox: 'AVb8dIqp7LwjvZhaGUdblWeW6AdiiQnkWVCMz32z0q7O13SI35a4NemZGMFj40ndOjZ-qCMg-PFeC5fI',
-    production: 'AVb8dIqp7LwjvZhaGUdblWeW6AdiiQnkWVCMz32z0q7O13SI35a4NemZGMFj40ndOjZ-qCMg-PFeC5fI'
-},
-
-// Show the buyer a 'Pay Now' button in the checkout flow
-commit: true,
-
-// payment() is called when the button is clicked
-payment: function (data, actions) {
-    // Make a call to the REST api to create the payment
-    return actions.payment.create({
-        payment: {
-            transactions: [
-                {
-                    amount: {total: total, currency: 'SGD'}
-                }
-            ]
-        }
-    });
-},
-
-// onAuthorize() is called when the buyer approves the payment
-onAuthorize: function (data, actions) {
-    // Make a call to the REST api to execute the payment
-    return actions.payment.execute().then(function () {
-      window.location = "ordersuccess.html";
-    });
-}
-}, '#paypal-button');
-
-
-
-
 
 
 console.log(cart);

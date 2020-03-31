@@ -58,9 +58,6 @@ class Customer(db.Model):
                 "NewsletterSubscription": self.NewsletterSubscription
                 }
 
-        
-
-
 @app.route("/customer")
 def get_all():
     return jsonify({"customers": [customer.json() for customer in Customer.query.all()]})
