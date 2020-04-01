@@ -13,7 +13,6 @@ USE `Product`;
 
 DROP TABLE IF EXISTS Product;
 CREATE TABLE IF NOT EXISTS Product (
-  ProductID int(6) NOT NULL,
   ProductName varchar(100) NOT NULL,
   ProductType varchar(100),
   ProductDescription varchar(999),
@@ -21,7 +20,7 @@ CREATE TABLE IF NOT EXISTS Product (
   UnitPrice float(10,2) NOT NULL,
   UnitWeight float(10,2) NOT NULL,
   ProductImage varchar(50),
-  PRIMARY KEY (`ProductID`)
+  PRIMARY KEY (`ProductName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
