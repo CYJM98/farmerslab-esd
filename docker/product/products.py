@@ -4,7 +4,8 @@ from flask_cors import CORS
 from os import environ
 
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/product'
+#app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/product'
+app.config['SQLALCHEMY_DATABASE_URI'] = environ.get('dbURL')
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 db = SQLAlchemy(app)
@@ -72,4 +73,15 @@ def create_product():
     return jsonify(product.json()), 201
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=5001, debug=True)
+    app.run(host='0.0.0.0', port=5001, debug=True)
+
+# 1) set dbURL=mysql+mysqlconnector://root@localhost:3306/product
+# python products.py
+# pip install -r requirements.txt
+# 2) docker build -t ycm98/product:1.0.0 .
+# View Images: docker images
+# Remove Image: docker rmi <image id>
+# 3) docker run -p 5001:5001 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/product ycm98/product:1.0.0
+# 4) docker run -p 5100:5001 -e dbURL=mysql+mysqlconnector://is213@host.docker.internal:3306/product ycm98/product:1.0.0	
+# Container (Start): docker start <containerid> (Stop): docker stop 
+# (Check): docker ps (Logs): docker logs (Remove) docker rm <containerid>
