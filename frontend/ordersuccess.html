@@ -150,7 +150,7 @@ $(async () => {
 
       //loop
       var d = new Date();
-      var orderId = 3;
+      var orderId = 8;
       var deliveryId = 11;
       //each refresh, orderID += 1
       
@@ -166,7 +166,7 @@ $(async () => {
             // var prodname = "test";         
             // var qty = 1;
             const response = 
-              await(
+              await fetch(
                 serviceURL, 
                 {method : "POST",
                 headers: {"content-Type": "application/json"},
@@ -176,7 +176,10 @@ $(async () => {
                 body: JSON.stringify({ OrderID: orderId, CustEmail: email, ProductName: prodname, 
                                         OrderQuantity: qty , DeliveryID: deliveryId , OrderDate:orderDate})
               });
-              
+
+              // json.response.forEach(el => {
+              //   console.log(el);
+              // });
           
             const data = await response.json();
             if (response.ok) {             
