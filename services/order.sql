@@ -3,30 +3,30 @@ SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
--- Database: `Order`
+-- Database: `Orders`
 
-CREATE DATABASE IF NOT EXISTS `Order` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
-USE `Order`;
+CREATE DATABASE IF NOT EXISTS `Orders` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+USE `Orders`;
 
 -- --------------------------------------------------------
--- Table structure for table `Order'
+-- Table structure for table `Orders'
 
-DROP TABLE IF EXISTS `Order`;
-CREATE TABLE IF NOT EXISTS `Order` (
+DROP TABLE IF EXISTS `Orders`;
+CREATE TABLE IF NOT EXISTS `Orders` (
   OrderID int(6) NOT NULL,
   CustEmail varchar(100) NOT NULL,
   ProductName varchar(100) NOT NULL,
   OrderQuantity int NOT NULL,
   DeliveryID int(6) NOT NULL,
-  OrderDate datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  OrderDate date NOT NULL,
   PRIMARY KEY (`OrderID`, `ProductName`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Dumping data for table `Order`
+-- Dumping data for table `Orders`
 --
 
-INSERT INTO `Order` (OrderID, CustEmail, ProductName, OrderQuantity, DeliveryID, OrderDate) VALUES
+INSERT INTO `Orders` (OrderID, CustEmail, ProductName, OrderQuantity, DeliveryID, OrderDate) VALUES
 ("909211", "jeffkua@gmail.com", "Onion", "2" ,"128374", "2020-01-03 21:43:23"),
 ("909211", "jeffkua@gmail.com","Leek", "1", "128374", "2020-01-03 21:43:23"),
 ("909222", "samquek@gmail.com", "Carrot","3","128375", "2020-01-05 21:43:23"),
