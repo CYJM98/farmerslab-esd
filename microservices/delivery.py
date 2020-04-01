@@ -2,6 +2,19 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+import pika
+
+
+# hostname = "localhost" # default hostname
+# port = 5672 # default port
+# # connect to the broker and set up a communication channel in the connection
+# connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
+#     # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
+#     # If "pika.exceptions.AMQPConnectionError" happens, may try again after disconnecting the wifi and/or disabling firewalls
+# channel = connection.channel()
+# # set up the exchange if the exchange doesn't exist
+# exchangename="order_fanout"
+# channel.exchange_declare(exchange=exchangename, exchange_type='fanout')
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/delivery'
@@ -72,7 +85,7 @@ def update_deliverydate(DeliveryID):
     OrderTrackingID = request.json['OrderTrackingID']
     DeliveryDate = request.json['DeliveryDate']
     DeliveryStatus = request.json['DeliveryStatus']
-    
+
     delivery.DeliveryID = DeliveryID
     delivery.DeliveryDate = DeliveryDate
     delivery.DeliveryStatus = DeliveryStatus
