@@ -40,14 +40,14 @@ class Orders(db.Model):
 
 @app.route("/order")
 def get_all():
-    return jsonify({"orders": [order.json() for order in Orders.query.all()]})
+    return jsonify({"orders": [orders.json() for orders in Orders.query.all()]})
 
 
 @app.route("/order/<int:OrderID>", methods=['GET'])
 def find_by_OrderID(OrderID):
-    order = Orders.query.filter_by(OrderID=OrderID).first()
+    order = {"orders": [orders.json() for orders in Orders.query.filter_by(OrderID=OrderID)]}
     if order:
-        return jsonify(order.json())
+        return jsonify(order)
     return jsonify({"message": "OrderID not found."}), 404
 
 @app.route("/order", methods=['POST'])

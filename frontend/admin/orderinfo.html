@@ -71,12 +71,13 @@
   <div class="container">
     <div class="row">
       <div class="col-lg-12" style="margin-top:4%;">
-        <table class="table table-hover text-center ">
+        <b><h4 id="orderid"></h4></b>
+        <h6 id="email"></h6>
+        <h6 id="tracking"></h6>
+        <table class="table table-hover" style="margin-top:4%;">
           <thead>
-            <th>Order ID</th>
-            <th>Customer</th>
-            <th>Tracking ID</th>
-            <th>Action</th>
+            <th>Product</th>
+            <th>Qty</th>
           </thead>
           <tbody id="orderrow">
           </tbody>
@@ -103,55 +104,62 @@
     let username = sessionStorage.getItem('username');
     let fname = sessionStorage.getItem('fname');
     let lname = sessionStorage.getItem('lname');
-    
+    let order = sessionStorage.getItem('current_order');
+    console.log(order);
 
     if( lname!=null && fname!=null & username!=null){ //to check if user is logged in
         $("div#field").html(fname + " " + lname+","); 
-        //when view more button is clicked from each order
-        function viewmore_click(clicked_id){
-            sessionStorage.setItem('current_order', clicked_id);
-            window.location.href = "orderInfo.html";
-        }
-
+        if(order == null){
+            window.location.href = "adminhome.html";
+        }else{
         
-        $(async () => {     
-          var orderURL = "http://127.0.0.1:5002/order";
-                  try {
-                      const response =
-                          await fetch(
-                              orderURL, { method: 'GET' }
-                          );
+            $(async () => {     
+            var orderURL = "http://127.0.0.1:5002/order/" + order;
+                    try {
+                        const response =
+                            await fetch(
+                                orderURL, { method: 'GET' }
+                            );
 
-                      const data = await response.json();
+                        const data = await response.json();
 
-                          if (response.ok) {
-                            
-                              var dataArr = data.orders;
-                              console.log(dataArr);
-                              for (var i = 0; i < dataArr.length; i++){
-                                var orderid = dataArr[i]["OrderID"];
-                                var email = dataArr[i]["CustEmail"];
-                                var row = "<tr><td>" + orderid + "</td><td>" +
-                                              email + "</td><td>-</td><td><button type='button' class='btn btn-secondary btn-sm' style='background-color:#9DC183; border:none; margin-top: 0%;' onclick='viewmore_click("+ orderid +")' >View More</button></td></tr>";
-                                if (i > 0){
-                                  if(dataArr[i]["OrderID"] !== dataArr[i-1]["OrderID"]){
-                                    $("#orderrow").append(row);
-                                  }
-                                }else{
-                                  $("#orderrow").append(row);
-                                }
-                              }           
-                          } 
+                            if (response.ok) {
+                                
+                                var dataArr = data.orders;
+                                //console.log(dataArr);
+                                var orderid = "";
+                                var email = "";
+                                var products = [];
+                                for (var i = 0; i < dataArr.length; i++){
+                                    orderid = dataArr[i]["OrderID"];
+                                    email = dataArr[i]["CustEmail"];
+                                    var productname = dataArr[i]["ProductName"]
+                                    var qty = dataArr[i]["OrderQuantity"]
+                                    products[productname] = qty
+                                }           
+                                console.log(products);
+                            } 
 
-                  } catch (error) {
-                      // Errors when calling the service; such as network error, 
-                      // service offline, etc
-                      console.log('There is a problem retrieving order data, please try again later.<br />' + error);
-                      $('div.col-lg-9').append('There is a problem retrieving order data, please try again later.<br />' + error); 
+                            $("#orderid").append("Order ID - " + orderid);
+                            $("#email").append("<b>Customer:</b> " + email);
+                            $("#tracking").append("<b>Tracking ID:</b> " + "-");
+                            for(var item in products){
+                                var value = products[item];
+                                var row = "<tr><td>" + item + "</td><td>" +
+                                              value + "</td></tr>";
+                                $("#orderrow").append(row);
+                            }
 
-                  }    
-            
-        });
+                    } catch (error) {
+                        // Errors when calling the service; such as network error, 
+                        // service offline, etc
+                        console.log('There is a problem retrieving order data, please try again later.<br />' + error);
+                        $('div.col-lg-9').append('There is a problem retrieving order data, please try again later.<br />' + error); 
+
+                    }    
+                
+            });
+        }
     }else{
       window.location.href = "index.html";
     }
