@@ -76,55 +76,38 @@
   
     <div class="container">
       <div class="row">
-        <div class="col-lg-8" style="margin-top:4%;"> 
+        <div class="col-lg-12 text-center" style="margin-top:15%;"> 
           <h4 style="color:#9DC183;">Your order has been confirmed!</h4>
-          <p class="border-line2"></p>
+
           <br/>
-          <p><small class="text-muted" style="margin-left:-29px;">Your order will be arriving to you soon! </small></p>
+          <p><small class="text-muted" style="margin-left:-29px;">Your order will be arriving to you soon. </small></p>
+          <button type="button" class="btn btn-secondary btn-sm text-center" style="background-color:#9DC183; border:none; margin-top: 0%;" >Track your order(s)</button>
         </div>
+
+        <!-- <div class="col-lg-4 text-center">
+          <div class="info-align">
+              <p style="color:#9DC183;">Delivery Address</p>
+              <p class="border-line"></p> -->
+              <!-- <p style="border: 1px solid; border-color:#9DC183; width:20%; margin-left:40%;"></p>
+              <div class="card  mb-3" style="border: none; border-radius: 10px; border:1px solid; border-color:  #9DC183; background-color: none; opacity:0.8;">
+                  <div class="card-text" id="addressInfo" style="max-height: 900px; padding:10%;"></div>
+               </div>
+               
+            </div>
+        </div> -->
+      <!-- end col 4 -->
           
 
       </div>
       <!-- end row 1 -->
-            
-        <div class="row">
-            <div class="col-lg-8">
-                <div class="card " style="margin-top:5%;">
-                    <!-- <div class="card-header text-center bg-transparent">
-                      <h4 style="color:#9DC183;">Cart items</h4>
-                    </div> -->
-                    <div class="card-text " >
-                      <div id="cartItems">
-                      </div>
-                    </div>  
-                    <div class="card-footer bg-transparent" id="cartInfoFooter">
-                      <button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: left;" onclick="clearcart()" >Track Order(s)</button>
-                      <small id="total" style="margin-left:50%; color:#9DC183;">Total:</small>
-                       </div>   
-                </div>
-            </div>
-            <!-- /.col-lg-8 -->
-
-            <div class="col-lg-4 text-center">
-                <div class="info-align">
-                    <p style="color:#9DC183;">Delivery Address</p>
-                    <!-- <p class="border-line"></p> -->
-                    <p style="border: 1px solid; border-color:#9DC183; width:20%; margin-left:40%;"></p>
-                    <div class="card  mb-3" style="border: none; border-radius: 10px; border:1px solid; border-color:  #9DC183; background-color: none; opacity:0.8;">
-                      
-                      
-                        <div class="card-text" id="addressInfo" style="max-height: 900px; padding:10%;"></div>
-
-                     </div>
-                     
-                </div>
-            </div>
-            <!-- end col 4 -->
-        </div>
-        
-        <!-- End row 2 -->
-        
-            
+             
+      <div class="row">
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+        <br/>
+      </div>
         
 
 </div>
@@ -135,6 +118,9 @@
     <div class="container">
     <p class="m-0 text-center text-white">Copyright &copy; The Farmers Lab 2020</p>
 </footer>
+
+
+
 
 <script>
 let fname = sessionStorage.getItem('fname');
@@ -153,96 +139,67 @@ if(fname==null && lname == null){
     window.location.href = "index.html";
 }else{
 
-    if (cart == null){
-        console.log("nothing in cart bitch");
-        $("#cartItems").append('<p style="padding:20px">Nothing in cart</p>');
-
-    }else{
-        var content ='';
-
-        console.log(cartArr[0].name);
-        content+='<table class="table table-hover text-center table-borderless ">'+
-                  '<thead>'+
-                  '<tr ><td scope="col" >Order Items</td><th scope="col"><small></small>'+
-                    '</td><td scope="col"><small></small></td><td scope="col"><small>Sub-total</small></td></tr></thead>'+
-                    '<tbody>'
-                    ;
-        var total = 0;
-        for(var i = 0; i<cartArr.length; i++ ){
-            
-            var itemname = cartArr[i].name;
-            var price = cartArr[i].price;
-            var img = cartArr[i].image;
-            var qty = cartArr[i].qty;
-            var subPrice = price * qty;
-            total += subPrice;
-          
-            content += 
-                        '<tr >' +
-                        '<td  scope="row" width="25%"><img class="card-img-top " src="'+ img+'" alt="Card image cap" id="img" height="100px;" width="100px"></td>' +
-                          '<td style="padding-top:8%;"><small>'+itemname+'</small></td>'+
-                          '<td style="padding-top:8%;"><small>'+qty+' Qty</small></td>'+
-                          '<td style="padding-top:8%;"><small>S$ '+subPrice+'</small></td>'+
-                        '</tr>'; 
-        }//end for loop
-
-        content+="</tbody></table>";
-        
-
-        
-        $("#cartItems").append(content);
-
-        //check out btn here
-        if(cart != null){
-          $("#cartInfoFooter").append('<button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: right;" id="checkout_btn" >S$ '+total +'</button> ');
-        }
-
-        //$("#checkout_btn").append("S$ "+ total +'.00');   
-        
-    }
 } //end if
 
-//to retrieve customer address
 let email = sessionStorage.getItem('email');
+
+
+
 $(async () => {     
-    var serviceURL = "http://127.0.0.1:5000/customer/" + email;
-        
+      var serviceURL = "http://127.0.0.1:5002/order";
+
+      //loop
+      var d = new Date();
+      var orderId = 3;
+      var deliveryId = 11;
+      //each refresh, orderID += 1
+      
+      var d = new Date();
+			var month = d.getMonth() + 1;
+			var year = d.getFullYear();
+			var orderDate = year + "-" + month + "-"+d.getDate();
+      
         try {
-            const response =
-                await fetch(
-                  serviceURL, { method: 'GET' }
-                );
+          for(var i = 0; i < cartArr.length ; i++){
+            var prodname = cartArr[i].name;         
+            var qty = cartArr[i].qty;
+            // var prodname = "test";         
+            // var qty = 1;
+            const response = 
+              await(
+                serviceURL, 
+                {method : "POST",
+                headers: {"content-Type": "application/json"},
+                // body: JSON.stringify({ OrderID: orderId, CustEmail: email, ProductName: prodname, 
+                //                         OrderQuantity: qty , DeliveryID: deliveryId , OrderDate:orderDate})
 
+                body: JSON.stringify({ OrderID: orderId, CustEmail: email, ProductName: prodname, 
+                                        OrderQuantity: qty , DeliveryID: deliveryId , OrderDate:orderDate})
+              });
+              
+          
             const data = await response.json();
-
-                if (response.ok) {
-                  var address = data.Address;
-                  var postalcode = data.PostalCode;
-                  var unit = data.UnitNum;
-
-                  console.log(address, postalcode, unit);
-                  var addressContent = '<p><small>'+address+  '</small></p>' +
-                                        '<p><small># '+unit+'</small></p>' +
-                                        '<p><small>Singapore '+postalcode+'</small></p>';
-
-                  $("#addressInfo").append(addressContent);
-
-                    
-                } 
-
+            if (response.ok) {             
+              console.log(data);
+            } else{
+              console.log("error bitch");
+            }
+          
+          }
         } catch (error) {
             // Errors when calling the service; such as network error, 
             // service offline, etc
             
             $("#addressInfo").append('There is a problem retrieving product data, please try again later.<br />' + error);
-           
 
         }    
+      
+        //finally; remove session
             
 });
 
 
-console.log(cart);
+
 </script>
 
 </body>
