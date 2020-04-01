@@ -150,10 +150,10 @@ $(async () => {
 
       //loop
       var d = new Date();
-      var orderId = 8;
-      var deliveryId = 11;
-      //each refresh, orderID += 1
+      var orderId = Math.floor((Math.random() * 10000) + 1) ;
+      var deliveryId = Math.floor((Math.random() * 10000) + 4) ;
       
+      console.log(orderId);
       var d = new Date();
 			var month = d.getMonth() + 1;
 			var year = d.getFullYear();
@@ -163,29 +163,24 @@ $(async () => {
           for(var i = 0; i < cartArr.length ; i++){
             var prodname = cartArr[i].name;         
             var qty = cartArr[i].qty;
-            // var prodname = "test";         
-            // var qty = 1;
+            
             const response = 
               await fetch(
                 serviceURL, 
                 {method : "POST",
                 headers: {"content-Type": "application/json"},
-                // body: JSON.stringify({ OrderID: orderId, CustEmail: email, ProductName: prodname, 
-                //                         OrderQuantity: qty , DeliveryID: deliveryId , OrderDate:orderDate})
-
                 body: JSON.stringify({ OrderID: orderId, CustEmail: email, ProductName: prodname, 
                                         OrderQuantity: qty , DeliveryID: deliveryId , OrderDate:orderDate})
               });
 
-              // json.response.forEach(el => {
-              //   console.log(el);
-              // });
           
             const data = await response.json();
             if (response.ok) {             
               console.log(data);
+              sessionStorage.removeItem("cart_items");
+
             } else{
-              console.log("error bitch");
+              console.log("error with data");
             }
           
           }
@@ -195,9 +190,8 @@ $(async () => {
             
             $("#addressInfo").append('There is a problem retrieving product data, please try again later.<br />' + error);
 
-        }    
-      
-        //finally; remove session
+        } 
+              
             
 });
 
