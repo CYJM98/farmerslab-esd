@@ -124,12 +124,13 @@
       <!-- end row 1 -->
             
 
-        
-            
-        
-
+      <br/>
+      <br/>
+      <br/>
+      <br/>
 </div>
 <!-- End container -->
+
 
 <!-- Footer -->
 <footer class="py-5 bg-dark" style="margin-top:2%;">
@@ -141,12 +142,17 @@
 
 
 <script>
-    let trackingId = sessionStorage.getItem('trackingId');
-    let fname = sessionStorage.getItem('fname');
-    let lname = sessionStorage.getItem('lname');
-    $("div#field").html(fname + " " + lname+","); 
+  let trackingId = sessionStorage.getItem('trackingId');
+  let fname = sessionStorage.getItem('fname');
+  let lname = sessionStorage.getItem('lname');
+  $("div#field").html(fname + " " + lname+","); 
+  
+  console.log(trackingId);
+  if (trackingId == null){
+    window.location.href = "order_tracking.html";
+  }else{
+
     
-    console.log(trackingId);
 
     //get it from delivery
     $(async () => {  
@@ -181,11 +187,11 @@
                     //
                     console.log(productName, orderQty, deliveryId);
                     content += 
-                                    '<tr >' +
-                                      
-                                      '<td style="padding-top:8%;"><small>'+productName+'</small></td>'+
-                                      '<td style="padding-top:8%;"><small>'+orderQty+' Qty</small></td>'+
-                                    '</tr>'; 
+                              '<tr >' +
+                                
+                                '<td style="padding-top:8%;"><small>'+productName+'</small></td>'+
+                                '<td style="padding-top:8%;"><small>'+orderQty+' Qty</small></td>'+
+                              '</tr>'; 
                     }//end for loop
 
                     content+="</tbody></table>";
@@ -229,6 +235,7 @@
         }       
 
     });
+  }
 
    
 </script>
