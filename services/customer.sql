@@ -34,9 +34,9 @@ CREATE TABLE IF NOT EXISTS Customer (
 --
 
 INSERT INTO Customer (CustEmail, Password, FirstName, LastName, Birthdate, Gender, MobileNum, Address, UnitNum, PostalCode, Country, RegistrationDate, NewsletterSubscription) VALUES
-("jeffkua@gmail.com", "greenunicorn1!", "Jeff", "Kua", "1998-01-11", "F", 99998888, "10 Punggol Rd", "11-72", 560123, "Singapore", "2019-12-12", "N"),
-("samquek@gmail.com", "greenunicorn1!", "Sam", "Quek", "1996-01-17", "M", 98457489, "134 Lakeside St", "11-50", 560134, "Singapore", "2019-12-12", "N"),
-("sebastianng@gmail.com", "greenunicorn1!", "Sebastian", "Ng", "1993-03-11", "M", 94567448, "54 Pasir Ris Rd", "11-23", 560123, "Singapore", "2019-12-12", "N");
+("jeffkua@gmail.com", "greenunicorn1!", "Jeff", "Kua", "1998-01-11", "F", 6583332192, "10 Punggol Rd", "11-72", 560123, "Singapore", "2019-12-12", "N"),
+("samquek@gmail.com", "greenunicorn1!", "Sam", "Quek", "1996-01-17", "M", 6596745227, "134 Lakeside St", "11-50", 560134, "Singapore", "2019-12-12", "N"),
+("sebastianng@gmail.com", "greenunicorn1!", "Sebastian", "Ng", "1993-03-11", "M", 6590670232, "54 Pasir Ris Rd", "11-23", 560123, "Singapore", "2019-12-12", "N");
 COMMIT;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
