@@ -26,6 +26,7 @@ CREATE TABLE IF NOT EXISTS Product (
 --
 -- Dumping data for table `Product`
 --
+
 INSERT INTO Product (ProductName, ProductType, ProductDescription, Quantity, UnitPrice, UnitWeight, ProductImage) VALUES
 ("Onion", "Vegetable", "An onion is a round vegetable with a brown skin that grows underground. Compatabile with almost every dish.", 5, 3, 2, "onion.jpg"),
 ("Tomato", "Vegetable", "Tomatoes are small, soft, red fruit that you can eat raw in salads or cooked as a vegetable.", 10, 4, 2, "tomato.jpg"),
@@ -47,7 +48,6 @@ INSERT INTO Product (ProductName, ProductType, ProductDescription, Quantity, Uni
 ("Yam", "Vegetable", "A yam is a root vegetable which is like a potato, and grows in tropical regions.", 15, 4, 1, "yam.jpg"),
 ("Turnip", "Vegetable", "A turnip is a round vegetable with a greenish-white skin that is the root of a crop.", 27, 5, 3, "turnip.jpg"),
 ("Potato", "Vegetable", "Potatoes are quite round vegetables with brown or red skins and white insides. They grow under the ground.", 18, 4, 5, "potato.jpg"),
-
 ("Apple", "Fruit", "An apple is a round fruit with smooth green, yellow, or red skin and firm white flesh.", 50, 4, 3, "apple.jpg"),
 ("Dragonfruit", "Fruit", "Dragon fruit, is a tropical fruit known for its vibrant red skin and sweet, seed-speckled pulp.", 20, 5, 4, "dragonfruit.jpg"),
 ("Grapes", "Fruit", "Grapes are small green or dark purple fruit which grow in bunches.", 40, 4, 3, "grapes.jpg"),
@@ -58,6 +58,7 @@ INSERT INTO Product (ProductName, ProductType, ProductDescription, Quantity, Uni
 ("Pear", "Fruit", "A pear is a sweet, juicy fruit which is narrow near its stalk, and wider and rounded at the bottom.", 20, 3, 2, "pear.jpg"),
 ("Plum", "Fruit", "A plum is a small, sweet fruit with a smooth red or yellow skin and a stone in the middle.", 10, 2, 5, "plum.jpg"),
 ("Watermelon", "Fruit", "A watermelon is a large round fruit with green skin, pink flesh, and black seeds.", 12, 5, 7, "watermelon.jpg");
+
 COMMIT;
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
