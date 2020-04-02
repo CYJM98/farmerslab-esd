@@ -16,7 +16,7 @@ CREATE TABLE IF NOT EXISTS Delivery (
   DeliveryID int(6) NOT NULL,
   OrderID int(6) NOT NULL,
   OrderTrackingID varchar(100) NULL,
-  DeliveryDate date NOT NULL,
+  DeliveryDate varchar(100) NULL,
   DeliveryStatus int(1) NOT NULL, 
   PRIMARY KEY (`DeliveryID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;

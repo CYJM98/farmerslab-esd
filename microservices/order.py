@@ -2,6 +2,10 @@ from flask import Flask, request, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
+from textmagic.rest import TextmagicRestClient
+import pika
+import json
+import requests
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+mysqlconnector://root@localhost:3306/orders'
@@ -40,6 +44,7 @@ class Orders(db.Model):
 
 @app.route("/order")
 def get_all():
+    sendSMS("6596745227", "message")
     return jsonify({"orders": [orders.json() for orders in Orders.query.all()]})
 
 
@@ -63,14 +68,51 @@ def create_order():
     
     order = Orders(**data)
     print(order)
+    type(order)
     
     try:
         db.session.add(order)
         db.session.commit()
+        send_order(order.json())
+        CustEmail = data["CustEmail"]
+        phoneNum = "65" + str(getCustomerInfo(CustEmail))
+        message = "Your order has been confirmed. You can track your order with the id " + str(OrderID) + "."
+        sendSMS(phoneNum, message)
     except:
         return jsonify({"message": "An error occurred creating order."}), 500
-
     return jsonify(order.json()), 201
+
+def getCustomerInfo(email):
+    url = "http://localhost:5000/customer/" + email
+    data = requests.get(url)
+    json_data = data.json()    
+    return json_data["MobileNum"]
+
+def sendSMS(number, message):
+    username = "cherylyong"
+    token = "vXOpsU9B55fJDggWUqcgv4J7RNMzkc"
+    client = TextmagicRestClient(username, token)
+  
+    message = client.messages.create(phones=number, text=message)
+
+def send_order(order):
+    hostname = "localhost" # default broker hostname. Web management interface default at http://localhost:15672
+    port = 5672 # default messaging port.
+    # connect to the broker and set up a communication channel in the connection
+    connection = pika.BlockingConnection(pika.ConnectionParameters(host=hostname, port=port))
+    # Note: various network firewalls, filters, gateways (e.g., SMU VPN on wifi), may hinder the connections;
+    # If "pika.exceptions.AMQPConnectionError" happens, may try again after disconnecting the wifi and/or disabling firewalls
+    channel = connection.channel()
+    channel.queue_declare(queue='order')
+
+    # prepare the message body content
+    message = json.dumps(order, default=str) # convert a JSON object to a string
+    print(message)
+    # send the message
+    # always inform Monitoring for logging no matter if successful or not
+    channel.basic_publish(exchange="", routing_key="order", body=message)
+    print("Publish to the queue")
+    connection.close()
 
 @app.route("/order/<int:OrderID>", methods=['PUT'])
 def update_order(OrderID):
