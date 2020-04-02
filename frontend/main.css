@@ -112,3 +112,17 @@ p .info-align{
     height: 47px;
     border-bottom: 1px solid #9DC183;
 }
+
+.orderStatusCircle{
+    height: 35px;
+    width: 35px;
+    background-color: #9DC183;
+    border-radius: 50%;
+    display: inline-block;
+}
+
+.trackingTable th{
+    color: #9DC183;
+
+}
+
