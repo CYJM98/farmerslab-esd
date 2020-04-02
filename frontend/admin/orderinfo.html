@@ -70,10 +70,38 @@
   
   <div class="container">
     <div class="row">
-      <div class="col-lg-12" style="margin-top:4%;">
+      <div class="col-lg-6" style="margin-top:4%;">
         <b><h4 id="orderid"></h4></b>
         <h6 id="email"></h6>
         <h6 id="tracking"></h6>
+        <!-- <h6 id="tracking"></h6> -->
+        <form id="trackingForm">
+          <div class="form-group form-inline" >
+            
+            <input type="text" class="form-control" id="trackingID"  placeholder="Order ID">
+            <!-- <button type="submit" class="btn btn-primary">Update</button> -->
+            <button type="submit" class="btn btn-secondary " style="background-color:#9DC183; border:none; margin-left:1%;" >Update</button>
+          </div>
+        </form>
+        
+        
+
+        
+      </div> 
+      <!-- end col 6 -->
+      <div class="col-lg-6" style="margin-top:4%;">
+        
+        <br/>
+        <h6 id="deliveryStatus"><b>Delivery Status:  </b></h6>
+        <h6 id="deliveryDate"><b>Delivery Datetime:  </b></h6>
+        <h6 id ="deliverId"><b>Delivery ID:  </b></h6>
+      
+      </div>
+    </div>
+    <!-- end row -->
+
+    <div class="row ">
+      <div class="col-lg-12">
         <table class="table table-hover" style="margin-top:4%;">
           <thead>
             <th>Product</th>
@@ -82,17 +110,26 @@
           <tbody id="orderrow">
           </tbody>
         </table>
-      </div> 
+      </div>
+      
+
+
     </div>
-    <!-- end row -->
+
     
     <!-- /.row -->
 
   </div>
   <!-- /.container -->
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
+<br/>
 
   <!-- Footer -->
-  <footer class="py-5 bg-dark" style="margin-top:2%; bottom:0; position: absolute; width:100%;">
+  <footer class="py-5 bg-dark" >
     <div class="container">
       <p class="m-0 text-center text-white">Copyright &copy; The Farmers Lab 2020</p>
     </div>
@@ -115,7 +152,7 @@
         
             $(async () => {     
             var orderURL = "http://127.0.0.1:5002/order/" + order;
-                    try {
+                    try { 
                         const response =
                             await fetch(
                                 orderURL, { method: 'GET' }
@@ -142,23 +179,121 @@
 
                             $("#orderid").append("Order ID - " + orderid);
                             $("#email").append("<b>Customer:</b> " + email);
-                            $("#tracking").append("<b>Tracking ID:</b> " + "-");
+                            //change
+                           // $("#tracking").append("<b>Tracking ID:</b> " + "-");
                             for(var item in products){
                                 var value = products[item];
                                 var row = "<tr><td>" + item + "</td><td>" +
                                               value + "</td></tr>";
                                 $("#orderrow").append(row);
                             }
+                            var deliveryId = dataArr[0]["DeliveryID"];
+
+
+                            //change
+                            sessionStorage.setItem("deliveryId", deliveryId);
+
+                            //console.log(deliveryId);
 
                     } catch (error) {
                         // Errors when calling the service; such as network error, 
                         // service offline, etc
                         console.log('There is a problem retrieving order data, please try again later.<br />' + error);
                         $('div.col-lg-9').append('There is a problem retrieving order data, please try again later.<br />' + error); 
+                    }   
 
-                    }    
-                
+
+                    //delivery
+                    var deliveryURL = "http://127.0.0.1:5004/delivery/" + deliveryId;
+
+                    try {
+                      const response =
+                          await fetch(
+                            deliveryURL, { method: 'GET' }
+                          );
+
+                      const data_delivery = await response.json();
+                    
+                      if (response.ok) {
+                        var delivery_status = data_delivery["DeliveryStatus"];
+                        var delivery_date = data_delivery["DeliveryDate"];
+                        var trackingid = data_delivery["OrderTrackingID"];
+                        
+
+                        if (delivery_status == "0"){
+                          $("#deliveryStatus").append("Out for deliver.");
+                        }else{
+                          $("#deliveryStatus").append("Order is processing.");
+                        }
+                        $("#deliveryDate").append(delivery_date);
+                        $("#deliverId").append(deliveryId);
+                       
+                       
+                       if (trackingid == null){
+                         
+                         $("#tracking").append("<p><b>Tracking ID :</b> - </p>");
+                       }else{
+                        $("#tracking").append("<p><b>Tracking ID : </b>"+trackingid+"</p>");
+                       }//end if else
+                      } //responses ok
+
+                    } catch (error) {
+                        console.log(error);
+                        //$("#addressInfo").append('There is a problem retrieving product data, please try again later.<br />' + error);
+                    }       
+
+                  
+
+
+
+       
             });
+
+
+            let deliveryId = sessionStorage.getItem('deliveryId');
+            console.log(deliveryId);
+
+            $("#trackingForm").submit(async (event) => {             
+              event.preventDefault();                    
+              
+              //console.log(deliveryId);
+              console.log("hello");
+
+              var serviceURL = "http://127.0.0.1:5004/delivery/" + deliveryId;
+              try {
+                const response =
+                  await fetch(
+                    serviceURL, 
+                    {method : "PUT",
+                    headers: {"content-Type": "application/json"},
+                    //body: JSON.stringify({ DeliveryID : 123, DeliveryDate: "2020-01-10", DeliveryStatus: "0", OrderTrackingID: 123, OrderID: 234})
+                    body: JSON.stringify({ OrderTrackingID: 123})
+                  });
+                
+                
+                const data = await response.json();
+                //console.log(data);
+                  if (response.ok) {
+                    console.log("hello");      
+                    sessionStorage.removeItem("deliveryId");        
+                  } else {
+                    console.log(data)
+                  }
+
+                } catch (error) {
+                  
+                  
+                  $("div#error").html('There is a problem adding customer data, please try again later.<br />' + error);
+
+                }    
+            
+              
+            });
+
+
+
+
+
         }
     }else{
       window.location.href = "index.html";
