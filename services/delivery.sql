@@ -15,7 +15,7 @@ DROP TABLE IF EXISTS Delivery;
 CREATE TABLE IF NOT EXISTS Delivery (
   DeliveryID int(6) NOT NULL,
   OrderID int(6) NOT NULL,
-  OrderTrackingID varchar(100) NOT NULL,
+  OrderTrackingID varchar(100) NULL,
   DeliveryDate date NOT NULL,
   DeliveryStatus int(1) NOT NULL, 
   PRIMARY KEY (`DeliveryID`)
@@ -25,7 +25,7 @@ CREATE TABLE IF NOT EXISTS Delivery (
 -- Dumping data for table `Delivery`
 --
 
-INSERT INTO Delivery (OrderID, OrderTrackingID, DeliveryDate, DeliveryStatus) VALUES
+INSERT INTO Delivery (DeliveryID, OrderID, DeliveryDate, DeliveryStatus) VALUES
 ("1", "128374", "2020-01-10", "1"),
 ("2", "128375", "2020-01-11", "1"),
 ("3", "128376", "2020-02-12", "1"),
