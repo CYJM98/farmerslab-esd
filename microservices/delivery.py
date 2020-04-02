@@ -59,6 +59,13 @@ def find_by_DeliveryID(DeliveryID):
         return jsonify(delivery.json())
     return jsonify({"message": "DeliveryID not found."}), 404
 
+@app.route("/delivery/<int:OrderID>", methods=['GET'])
+def find_by_OrderID(OrderID):
+    delivery = Delivery.query.filter_by(OrderID=OrderID).first()
+    if delivery:
+        return jsonify(delivery.json())
+    return jsonify({"message": "DeliveryID not found."}), 404
+
 @app.route("/delivery", methods=['POST'])
 def create_delivery():
     data = request.get_json()
