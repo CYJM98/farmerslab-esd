@@ -44,7 +44,6 @@ class Orders(db.Model):
 
 @app.route("/order")
 def get_all():
-    sendSMS("6596745227", "message")
     return jsonify({"orders": [orders.json() for orders in Orders.query.all()]})
 
 
@@ -77,7 +76,7 @@ def create_order():
         CustEmail = data["CustEmail"]
         phoneNum = "65" + str(getCustomerInfo(CustEmail))
         message = "Dear customer, your order has been confirmed. You can track your order with the following OrderID: " + str(OrderID) + ". Thank you for shopping at The Farmers Lab!"
-        sendSMS(phoneNum, message)
+        #sendSMS(phoneNum, message)
     except:
         return jsonify({"message": "An error occurred creating order."}), 500
     return jsonify(order.json()), 201
