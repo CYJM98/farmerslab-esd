@@ -221,7 +221,7 @@
           
             if (response.ok) {
               var delivery_status = data_delivery["DeliveryStatus"];
-              if(delivery_status == "1"){
+              if(delivery_status == "0"){
                 $("td#ordershipped").css({"height": "35px", "width": "35px","border-radius": "50%",  "border": "1px solid #9DC183", "display": "inline-block"});
               }else{
                 $("td#ordershipped").css({"height": "35px", "width": "35px","border-radius": "50%",  "background-color":"#9DC183", "display": "inline-block"});
