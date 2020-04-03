@@ -57,7 +57,13 @@ INSERT INTO Product (ProductName, ProductType, ProductDescription, Quantity, Uni
 ("Peach", "Fruit", "A peach is a soft, round, slightly furry fruit with sweet yellow flesh and pinky-orange skin.", 15, 4.5, 3, "peach.jpg"),
 ("Pear", "Fruit", "A pear is a sweet, juicy fruit which is narrow near its stalk, and wider and rounded at the bottom.", 20, 3, 2, "pear.jpg"),
 ("Plum", "Fruit", "A plum is a small, sweet fruit with a smooth red or yellow skin and a stone in the middle.", 10, 2, 5, "plum.jpg"),
-("Watermelon", "Fruit", "A watermelon is a large round fruit with green skin, pink flesh, and black seeds.", 12, 5, 7, "watermelon.jpg");
+("Watermelon", "Fruit", "A watermelon is a large round fruit with green skin, pink flesh, and black seeds.", 12, 5, 7, "watermelon.jpg"),
+
+("Potted Apple", "Pots", "This is a potted apple.", 10, 4, 5, "pot1.jpg"),
+("Potted Pear", "Pots", "This is a potted pear.", 15, 5, 5, "pot2.jpg"),
+("Potted Orange", "Pots", "This is a potted orange.", 20, 4, 5, "pot3.jpg"),
+("Potted Chilli", "Pots", "This is a potted chilli.", 10, 4, 5, "pot4.jpg"),
+("Potted Radish", "Pots", "This is a potted radish.", 10, 5, 5, "pot5.jpg");
 
 COMMIT;
 
