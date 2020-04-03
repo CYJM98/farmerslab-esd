@@ -74,7 +74,7 @@
         <table class="table table-hover text-center ">
           <thead>
             <th>Order ID</th>
-            <th>Customer</th>
+            <!-- <th>Customer</th> -->
             <th>Tracking ID</th>
             <th>Action</th>
           </thead>
@@ -120,34 +120,33 @@
 
         
         $(async () => {     
-          var orderURL = "http://127.0.0.1:5002/order";
+
+              var deliveryURL = "http://127.0.0.1:5004/delivery";
                   try {
                       const response =
                           await fetch(
-                              orderURL, { method: 'GET' }
+                              deliveryURL, { method: 'GET' }
                           );
 
                       const data = await response.json();
 
                           if (response.ok) {
                             
-                              var dataArr = data.orders;
-                              console.log(dataArr);
-                              for (var i = 0; i < dataArr.length; i++){
-                                var orderid = dataArr[i]["OrderID"];
-                                var email = dataArr[i]["CustEmail"];
-                                //check if tracking id is null
-
-                                var row = "<tr><td>" + orderid + "</td><td>" +
-                                              email + "</td><td>-</td><td><button type='button' class='btn btn-secondary btn-sm' style='background-color:#9DC183; border:none; margin-top: 0%;' onclick='viewmore_click("+ orderid +")' >View More</button></td></tr>";
-                                if (i > 0){
-                                  if(dataArr[i]["OrderID"] !== dataArr[i-1]["OrderID"]){
-                                    $("#orderrow").append(row);
-                                  }
-                                }else{
-                                  $("#orderrow").append(row);
+                            console.log("hello");
+                              var dataArr = data.delivery;
+                              console.log(dataArr, "hello");
+                              for(var d = 0; d<dataArr.length; d++){
+                                var d_orderid = dataArr[d]["OrderID"];
+                                var d_trackingid = dataArr[d]["OrderTrackingID"];
+                                var d_delieryId = dataArr[d]["DeliveryID"];
+                                if(d_trackingid == "" || d_trackingid == null){
+                                  d_trackingid = "-";
                                 }
-                              }           
+
+                                var row = "<tr><td>" + d_orderid+ "</td>"+"<td>"+d_trackingid+"</td><td><button type='button' class='btn btn-secondary btn-sm' style='background-color:#9DC183; border:none; margin-top: 0%;' onclick='viewmore_click("+ d_orderid +")' >View More</button></td></tr>";
+                                $("#orderrow").append(row);   
+                              }
+         
                           } 
 
                   } catch (error) {
@@ -155,7 +154,6 @@
                       // service offline, etc
                       console.log('There is a problem retrieving order data, please try again later.<br />' + error);
                       $('div.col-lg-9').append('There is a problem retrieving order data, please try again later.<br />' + error); 
-
                   }    
             
         });
