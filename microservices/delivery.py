@@ -50,14 +50,11 @@ def find_by_DeliveryID(DeliveryID):
 @app.route("/delivery/<int:DeliveryID>", methods=['PUT'])
 def update_deliverydate(DeliveryID):
     delivery = Delivery.query.get(DeliveryID)
-    DeliveryID = request.json['DeliveryID']
-    OrderID = request.json['OrderID']
+
     OrderTrackingID = request.json['OrderTrackingID']
     DeliveryDate = request.json['DeliveryDate']
     DeliveryStatus = request.json['DeliveryStatus']
-
-    delivery.DeliveryID = DeliveryID
-    delivery.OrderID = OrderID
+    
     delivery.OrderTrackingID = OrderTrackingID
     delivery.DeliveryDate = DeliveryDate
     delivery.DeliveryStatus = DeliveryStatus

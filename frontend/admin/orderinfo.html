@@ -83,6 +83,7 @@
             <button type="submit" class="btn btn-secondary " style="background-color:#9DC183; border:none; margin-left:1%;" >Update</button>
           </div>
         </form>
+        <p id="error"></p>
         
         
 
@@ -257,9 +258,23 @@
               event.preventDefault();                    
               
               //console.log(deliveryId);
-              console.log("hello");
 
               var serviceURL = "http://127.0.0.1:5004/delivery/" + deliveryId;
+              console.log(serviceURL);
+
+              var trackingId_val =  $("#trackingID").val();
+             
+
+              var d = new Date();
+              var month = d.getMonth() + 1;
+              var year = d.getFullYear();
+              var deliveryDate = year + "-" + month + "-"+d.getDate();
+
+              console.log(trackingId_val, deliveryDate);
+            if(trackingId_val == ""){
+              console.log("empty bitch");
+              $("#error").append("Please enter value before updating");
+            }else{
               try {
                 const response =
                   await fetch(
@@ -267,7 +282,7 @@
                     {method : "PUT",
                     headers: {"content-Type": "application/json"},
                     //body: JSON.stringify({ DeliveryID : 123, DeliveryDate: "2020-01-10", DeliveryStatus: "0", OrderTrackingID: 123, OrderID: 234})
-                    body: JSON.stringify({ OrderTrackingID: 123})
+                    body: JSON.stringify({ OrderTrackingID: trackingId_val, DeliveryDate: deliveryDate, DeliveryStatus: "1" })
                   });
                 
                 
@@ -275,7 +290,9 @@
                 //console.log(data);
                   if (response.ok) {
                     console.log("hello");      
-                    sessionStorage.removeItem("deliveryId");        
+                    sessionStorage.removeItem("deliveryId");     
+                    
+                    //location.reload();  
                   } else {
                     console.log(data)
                   }
@@ -285,7 +302,9 @@
                   
                   $("div#error").html('There is a problem adding customer data, please try again later.<br />' + error);
 
-                }    
+                }   
+              }
+             
             
               
             });
