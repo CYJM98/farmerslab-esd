@@ -57,7 +57,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Orders</a>
+            <a class="nav-link" href="order_tracking.html">Orders</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="cart.html">Cart</a>
@@ -78,10 +78,11 @@
       <div class="row">
         <div class="col-lg-12 text-center" style="margin-top:15%;"> 
           <h4 style="color:#9DC183;">Your order has been confirmed!</h4>
+          <i style="color:#9DC183;" id="order_tracking_ID">Order ID: </i>
 
           <br/>
           <p><small class="text-muted" style="margin-left:-29px;">Your order will be arriving to you soon. </small></p>
-          <button type="button" class="btn btn-secondary btn-sm text-center" style="background-color:#9DC183; border:none; margin-top: 0%;" >Track your order(s)</button>
+          <a href="order_tracking.html"><button type="button" class="btn btn-secondary btn-sm text-center" style="background-color:#9DC183; border:none; margin-top: 0%;" >Track your order(s)</button></a>
         </div>
 
         <!-- <div class="col-lg-4 text-center">
@@ -152,6 +153,7 @@ $(async () => {
       var d = new Date();
       var orderId = Math.floor((Math.random() * 10000) + 1) ;
       var deliveryId = Math.floor((Math.random() * 10000) + 4) ;
+
       
       console.log(orderId);
       var d = new Date();
@@ -178,6 +180,7 @@ $(async () => {
             if (response.ok) {             
               console.log(data);
               sessionStorage.removeItem("cart_items");
+              $("#order_tracking_ID").append(orderId);
 
             } else{
               console.log("error with data");

@@ -1,0 +1,243 @@
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="">
+  <meta name="author" content="">
+
+  <title>The Farmers Lab</title>
+  <!--Fontawesome CDN-->
+	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+  <!--  -->
+
+  <!-- Latest compiled and minified CSS -->
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css">
+
+  <!-- jQuery library -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+
+  <!-- Popper JS -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
+
+  <!-- Latest compiled JavaScript -->
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+
+  <!-- Custom JavaScript -->
+  <script src="common.js"></script>
+
+  <!-- Paypal Script -->
+  <script src="https://www.paypalobjects.com/api/checkout.js"></script>
+
+  <!--Custom styles-->
+  <link rel="stylesheet" type="text/css" href="main.css">
+</head>
+
+<body>
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="home.html">The Farmers Lab</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <div id="field" ></div>
+          </li>
+
+          <li class="nav-item">
+            <a class="nav-link" href="home.html">Home
+              
+            </a>
+          </li>
+          <li class="nav-item active">
+            <a class="nav-link" href="order_tracking.html">Orders</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="cart.html">Cart</a>
+            <span class="sr-only">(current)</span>
+          </li>
+          
+          <li class="nav-item">
+            <a class="nav-link" onclick="logout()">Logout</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Page Content -->
+  
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-7" style="margin-top:4%;"> 
+          <h4 style="color:#9DC183;">Ordered Items</h4>
+          <p class="border-line2"></p>
+          <br/>  
+          <div class="card" style="margin-top:5%;">
+            <div class="card-text " >
+              <div id="orderedItems">
+              </div>
+            </div>  
+            
+        </div>       
+        </div>
+        <div class="col-lg-5 ">
+          <div class="info-align">
+              <h4 style="color:#9DC183;" class="text-center">Order Information Status</h4>
+              <h4 class="text-center"><i id="orderID" style="color:#9DC183;"></i></h4>
+              
+              <div class="card" style="border: none; margin-left:10%; ">
+                  <div class="card-text"  style=" padding:5%;">
+                      <table style="color:#9DC183;">
+                        <col width="90">
+                        <tr height="70">
+                          <td id="orderProcess" class="orderStatusCircle" ></td>
+                          <td height="70">
+                            Order is processing
+                          </td>
+                        </tr>
+                        <tr >
+                          <td id="ordershipped" >
+                          </td>
+                          <td>
+                            Order is shipped
+                          </td>
+                        </tr>
+                      </table>
+                  </div>
+                  <div class="card-footer bg-transparent" id="cartInfoFooter">
+                    <small style=" color:#9DC183;">Track other orders</small>
+                    <a href="order_tracking.html"><button type="button" class="btn btn-secondary btn-sm" style="background-color:#9DC183; border:none; margin-top: 0%;float: right; width:30%;" >Find</button></a>
+                  </div>
+               </div>
+               <!-- card -->    
+          </div>
+      </div>
+      <!-- end col 4 -->
+      </div>
+      <!-- end row 1 -->
+            
+
+      <br/>
+      <br/>
+      <br/>
+      <br/>
+</div>
+<!-- End container -->
+
+
+<!-- Footer -->
+<footer class="py-5 bg-dark" style="margin-top:2%;">
+    <div class="container">
+    <p class="m-0 text-center text-white">Copyright &copy; The Farmers Lab 2020</p>
+</footer>
+
+
+
+
+<script>
+  let trackingId = sessionStorage.getItem('trackingId');
+  let fname = sessionStorage.getItem('fname');
+  let lname = sessionStorage.getItem('lname');
+  $("div#field").html(fname + " " + lname+","); 
+  
+  console.log(trackingId);
+  if (trackingId == null){
+    window.location.href = "order_tracking.html";
+  }else{
+
+    
+
+    //get it from delivery
+    $(async () => {  
+
+        var serviceURL = "http://127.0.0.1:5002/order/"+trackingId;
+        try {
+            const response =
+                await fetch(
+                  serviceURL, { method: 'GET' }
+                );
+
+            const data = await response.json();
+              var orderArr = [];
+              orderArr = data.orders; 
+
+                if (response.ok) {
+                  var content ='';
+                  $("#orderID").append(trackingId);
+                  //----------------------------------------
+                  //--------------------------------------
+                  content+='<table class="table table-hover trackingTable ">'+
+                    '<thead><tr><th><small><b>Product name </b></small></th><th><small><b>Quantity</b></small> </th></thead>'+
+                    '<tbody>'
+                    ;
+
+                  for(var i = 0 ; i < orderArr.length; i++){
+
+                    var productName = orderArr[i]["ProductName"];
+                    var orderQty = orderArr[i]["OrderQuantity"];
+                    var deliveryId = orderArr[i]["DeliveryID"];
+
+                    //
+                    console.log(productName, orderQty, deliveryId);
+                    content += 
+                              '<tr >' +
+                                
+                                '<td style="padding-top:8%;"><small>'+productName+'</small></td>'+
+                                '<td style="padding-top:8%;"><small>'+orderQty+' Qty</small></td>'+
+                              '</tr>'; 
+                    }//end for loop
+
+                    content+="</tbody></table>";
+                    
+                    console.log(content);
+                    
+                    $("#orderedItems").append(content);
+                 
+
+                } 
+        } catch (error) {
+            console.log(error);
+            //$("#addressInfo").append('There is a problem retrieving product data, please try again later.<br />' + error);
+        }       
+
+
+        //delivery micro
+        var deliveryURL  = "http://127.0.0.1:5004/delivery/"+deliveryId;
+
+        try {
+            const response =
+                await fetch(
+                  deliveryURL, { method: 'GET' }
+                );
+
+            const data_delivery = await response.json();
+          
+            if (response.ok) {
+              var delivery_status = data_delivery["DeliveryStatus"];
+              if(delivery_status == "1"){
+                $("td#ordershipped").css({"height": "35px", "width": "35px","border-radius": "50%",  "border": "1px solid #9DC183", "display": "inline-block"});
+              }else{
+                $("td#ordershipped").css({"height": "35px", "width": "35px","border-radius": "50%",  "background-color":"#9DC183", "display": "inline-block"});
+              }
+              console.log(delivery_status);
+            } 
+
+        } catch (error) {
+            console.log(error);
+            //$("#addressInfo").append('There is a problem retrieving product data, please try again later.<br />' + error);
+        }       
+
+    });
+  }
+
+   
+</script>
+</body>
+</html>

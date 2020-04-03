@@ -3,6 +3,11 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_cors import CORS
 from os import environ
 import pika
+import json
+
+connection = pika.BlockingConnection(
+    pika.ConnectionParameters(host='localhost'))
+channel = connection.channel()
 
 
 # hostname = "localhost" # default hostname
@@ -28,11 +33,11 @@ class Delivery(db.Model):
     
     DeliveryID = db.Column(db.Integer, primary_key=True)
     OrderID = db.Column(db.Integer, nullable=False)
-    OrderTrackingID = db.Column(db.Integer, nullable=False)
-    DeliveryDate = db.Column(db.DateTime, nullable=False)
+    OrderTrackingID = db.Column(db.String(100), nullable=False)
+    DeliveryDate = db.Column(db.String(100), nullable=False)
     DeliveryStatus = db.Column(db.Integer, nullable=False)
 
-    def __init__(self, DeliveryID, OrderID, OrderTrackingID, DeliveryDate):
+    def __init__(self, DeliveryID, OrderID, OrderTrackingID, DeliveryDate, DeliveryStatus):
         self.DeliveryID = DeliveryID
         self.OrderID = OrderID
         self.OrderTrackingID = OrderTrackingID
@@ -46,6 +51,40 @@ class Delivery(db.Model):
                 "DeliveryDate": self.DeliveryDate, 
                 "DeliveryStatus": self.DeliveryStatus
                 }       
+
+channel.queue_declare(queue='order')
+
+def callback(ch, method, properties, body):
+    print(" [x] Received %r" % body)
+    
+    data = json.loads(body) # Convert string into json
+    print(data)
+
+#     delivery = Delivery({
+#                 {"DeliveryID": data.DeliveryID,
+#                 "OrderID": data.OrderID,
+#                 "OrderTrackingID": self.OrderTrackingID, 
+#                 "DeliveryDate": self.DeliveryDate, 
+#                 "DeliveryStatus": self.DeliveryStatus
+#                 }       
+# )
+    delivery = Delivery(DeliveryID=data["DeliveryID"], OrderID=data["OrderID"], OrderTrackingID="", DeliveryDate="", DeliveryStatus=0) 
+    try:
+        db.session.add(delivery)
+        db.session.commit()
+    except:
+        print("Error in adding to database")
+
+    ##item = json.loads(body)
+    
+
+channel.basic_consume(
+    queue='order', on_message_callback=callback, auto_ack=True)
+
+print(' [*] Waiting for messages. To exit press CTRL+C')
+channel.start_consuming()
+
+
 
 @app.route("/delivery")
 def get_all():
