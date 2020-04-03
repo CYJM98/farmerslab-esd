@@ -76,7 +76,7 @@ def create_order():
         send_order(order.json())
         CustEmail = data["CustEmail"]
         phoneNum = "65" + str(getCustomerInfo(CustEmail))
-        message = "Your order has been confirmed. You can track your order with the id " + str(OrderID) + "."
+        message = "Dear customer, your order has been confirmed. You can track your order with the following OrderID: " + str(OrderID) + ". Thank you for shopping at The Farmers Lab!"
         sendSMS(phoneNum, message)
     except:
         return jsonify({"message": "An error occurred creating order."}), 500
