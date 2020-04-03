@@ -5,8 +5,21 @@
     </head>
 
     <body>
+        <input id = 'signup_button' type ='button' value ='Sign up with Facebook'>
+        
+        <fb:login-button 
+            scope="public_profile,email,user_birthday, user_gender, user_location" 
+            onlogin="checkLoginState();">
+        </fb:login-button>
 
         <script>
+
+        document.getElementById("signup_button").addEventListener("click", function() {
+            FB.login(function(response) {
+                checkLoginState()
+            }, {scope: 'public_profile,email'});
+
+        })
 
         window.fbAsyncInit = function() {
             FB.init({
@@ -50,11 +63,11 @@
                 console.log('Successful login for: ' + response.name);
                 document.getElementById('status').innerHTML =
                     'Thanks for logging in, ' + response.name + '!'; 
+
                     if(response && !response.error){
                         buildProfile(response);
-                    }
-                
-                
+
+                    }        
             });
         }      
 
@@ -85,14 +98,9 @@
         
         </script>
 
-    <fb:login-button 
-        scope="public_profile,email,user_birthday, user_gender, user_location"
-        onlogin="checkLoginState();">
-    </fb:login-button>
-
-    <input type ='button' onclick="checkLoginState()" value ="Sign up with Facebook">
     
      <div id="status"></div>
      <div id ='profile'></div>
     </body>
 </html>
+
