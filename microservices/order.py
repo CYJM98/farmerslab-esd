@@ -89,8 +89,8 @@ def getCustomerInfo(email):
     return json_data["MobileNum"]
 
 def sendSMS(number, message):
-    username = "cherylyong"
-    token = "vXOpsU9B55fJDggWUqcgv4J7RNMzkc"
+    username = "xiaoyenkua"
+    token = "WLiObqlZaiLOcGBApVuUinC4xz3KY7"
     client = TextmagicRestClient(username, token)
   
     message = client.messages.create(phones=number, text=message)
