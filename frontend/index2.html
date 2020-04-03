@@ -17,7 +17,7 @@
         document.getElementById("signup_button").addEventListener("click", function() {
             FB.login(function(response) {
                 checkLoginState()
-            }, {scope: 'public_profile,email'});
+            }, {scope: 'public_profile,email,user_birthday, user_gender, user_location'});
 
         })
 
