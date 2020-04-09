@@ -59,7 +59,7 @@
             </a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Orders</a>
+            <a class="nav-link" href="order_tracking.html">Orders</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="cart.html">Cart</a>
@@ -111,11 +111,11 @@
 
       <div class="col-lg-3">
 
-        <h4 class="my-4 category">Category</h4>
+        <h4 class="my-4 category" style="color:#9DC183;"> Category</h4>
         
         <ul class="list-group list-group-flush">
-          <li class="list-group-item"><a href="#"  id="veg" >Vegetable</a></li>
-          <li class="list-group-item"><a href="#">Fruits</a></li>
+          <li class="list-group-item"><a href="#"  id="veg" onClick="category_click(this.id)" >Vegetable</a></li>
+          <li class="list-group-item"><a href="#" id = "fruit" onClick="category_click(this.id)">Fruits</a></li>
           
           
         </ul>
@@ -162,6 +162,15 @@
             window.location.href = "productInfo.html";
         }
 
+        function category_click(clicked_id){
+          console.log(clicked_id);
+          sessionStorage.setItem('fruitclick', clicked_id);
+          location.reload();
+        }
+
+        let fruitclick = sessionStorage.getItem('fruitclick');
+
+          
         
         $(async () => {     
           var productURL = "http://127.0.0.1:5001/product";
@@ -178,37 +187,80 @@
                           if (response.ok) {
                             
                               var dataArr = data.products;
-                                               
                              
-                              for(var col = 0 ; col < dataArr.length; col++){ 
-      
-                                if (col % 3 == 0){
-                                  content += "<div class='row'><div class='card-group' style='margin:2%;''>";
-                                  
+                                
+                              vegArr = [];
+                              fruitArr = [];
+                              for (var c = 0; c < dataArr.length; c++){
+                                if(dataArr[c]["ProductType"] == "Vegetable"){   
+                                  vegArr.push(dataArr[c]);
                                 }else{
-                                  count++;
+                                  fruitArr.push(dataArr[c]);
                                 }
 
-                                content += '<div class="cardwidth" id="'+ dataArr[col]["ProductName"]+'" onClick="viewmore_click(this.id)"><div class="card" style="border: none;  ">' +
-                                            '<img class="card-img-top" src="img/'+ dataArr[col]["ProductImage"]+'" alt="Card image cap">' +
-                                            '<div class="card-body">' +
-                                              '<h5 class="card-title plantname">'+ dataArr[col]["ProductName"]+'</h5>' +
-                                              
-                                              '<p class="card-text"><small class="text-muted">SGD '+ dataArr[col]["UnitPrice"]+'.00</small></p>'+
-                                             // '<button type="button" class="btn btn-outline-secondary btn-sm price-btn" id="'+ dataArr[col]["ProductName"]+'" onClick="viewmore_click(this.id)" style="display: block; float: right; ">View More</button>'+
-                                             '<p style="border: 1px solid; border-color:#9DC183; width:20%; margin-left:40%;"></p>'+
-                                            '</div></div></div>';
-                                                              
-                                if(count%3 == 0 ){
+                              }
 
-                                  content +="</div></div>";
-                                  $('div.col-lg-9').append(content);
-                                  content = "";
-                                  count =1;
+                              if (fruitclick== "veg" || fruitclick == null){ 
+                                for(var col= 0; col< vegArr.length; col++){
+                                  if (col % 3 == 0){
+                                      content += "<div class='row'><div class='card-group' style='margin:2%;''>";
+                                    }else{
+                                      count++;
+                                    }
+                                    
+                                    content += '<div class="cardwidth" id="'+ vegArr[col]["ProductName"]+'" onClick="viewmore_click(this.id)"><div class="card" style="border: none;  ">' +
+                                                '<img class="card-img-top" src="img/'+ vegArr[col]["ProductImage"]+'" alt="Card image cap">' +
+                                                '<div class="card-body">' +
+                                                  '<h5 class="card-title plantname">'+ vegArr[col]["ProductName"]+'</h5>' +
+                                                  
+                                                  '<p class="card-text"><small class="text-muted">SGD '+ vegArr[col]["UnitPrice"]+'.00</small></p>'+
+                                                // '<button type="button" class="btn btn-outline-secondary btn-sm price-btn" id="'+ dataArr[col]["ProductName"]+'" onClick="viewmore_click(this.id)" style="display: block; float: right; ">View More</button>'+
+                                                '<p style="border: 1px solid; border-color:#9DC183; width:20%; margin-left:40%;"></p>'+
+                                                '</div></div></div>';
+                                    
+                                    if(count%3 == 0 ){
+                                      content +="</div></div>";
+                                      $('div.col-lg-9').append(content);
+                                      content = "";
+                                      count =1;
+                                    }//end if count
+
                                 }
-                              } //end for loop
+
+                              }else{
+                                for(var col= 0; col< fruitArr.length; col++){
+                                  if (col % 3 == 0){
+                                      content += "<div class='row'><div class='card-group' style='margin:2%;''>";
+                                    }else{
+                                      count++;
+                                    }
+                                    
+                                    content += '<div class="cardwidth" id="'+ fruitArr[col]["ProductName"]+'" onClick="viewmore_click(this.id)"><div class="card" style="border: none;  ">' +
+                                                '<img class="card-img-top" src="img/'+ fruitArr[col]["ProductImage"]+'" alt="Card image cap">' +
+                                                '<div class="card-body">' +
+                                                  '<h5 class="card-title plantname">'+ fruitArr[col]["ProductName"]+'</h5>' +
+                                                  
+                                                  '<p class="card-text"><small class="text-muted">SGD '+ fruitArr[col]["UnitPrice"]+'.00</small></p>'+
+                                                // '<button type="button" class="btn btn-outline-secondary btn-sm price-btn" id="'+ dataArr[col]["ProductName"]+'" onClick="viewmore_click(this.id)" style="display: block; float: right; ">View More</button>'+
+                                                '<p style="border: 1px solid; border-color:#9DC183; width:20%; margin-left:40%;"></p>'+
+                                                '</div></div></div>';
+                                    
+                                    if(count%3 == 0 ){
+                                      content +="</div></div>";
+                                      $('div.col-lg-9').append(content);
+                                      content = "";
+                                      count =1;
+                                    }//end if count
+
+                                }
+                              }
+
+                                                                                   
+
+                              // } //end for loop
                               $('div.col-lg-9').append(content); //append remaining
-                          } 
+                            
+                          } //response ok
 
                   } catch (error) {
                       // Errors when calling the service; such as network error, 
